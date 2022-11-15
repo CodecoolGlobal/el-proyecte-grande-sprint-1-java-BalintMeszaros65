@@ -1,0 +1,69 @@
+# ------- Front-end ----------
+
+*.idea
+front-end-react/out
+# dependencies
+front-end-react/node_modules
+front-end-react/.pnp
+front-end-react/.pnp.js
+
+# testing
+front-end-react/coverage
+
+# production
+front-end-react/build
+
+# misc
+front-end-react/.DS_Store
+front-end-react/.env.local
+front-end-react/.env.development.local
+front-end-react/.env.test.local
+front-end-react/.env.production.local
+
+front-end-react/npm-debug.log*
+front-end-react/yarn-debug.log*
+front-end-react/yarn-error.log*
+
+# ------- Back-end ----------
+
+
+back-end-spring/target
+
+back-end-spring/HELP.md
+back-end-spring/!.mvn/wrapper/maven-wrapper.jar
+back-end-spring/!**/src/main/**/target/
+back-end-spring/!**/src/test/**/target/
+
+
+back-end-spring/.apt_generated
+back-end-spring/.classpath
+back-end-spring/.factorypath
+back-end-spring/.project
+back-end-spring/.settings
+back-end-spring/.springBeans
+back-end-spring/.sts4-cache
+
+
+back-end-spring/*.iws
+back-end-spring/*.iml
+back-end-spring/*.ipr
+
+back-end-spring/nbproject/private/
+back-end-spring/nbbuild/
+back-end-spring/dist/
+back-end-spring/nbdist/
+back-end-spring/.nb-gradle/
+back-end-spring/build/
+back-end-spring/!**/src/main/**/build/
+back-end-spring/!**/src/test/**/build/
+
+
+
+
+
+
+
+
+
+
+
