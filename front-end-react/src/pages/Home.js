@@ -1,16 +1,16 @@
 import React from 'react';
 import './Home.css';
-import {Link} from 'react-router-dom';
+import {Button} from "@mui/material";
 
 export function Home() {
     //                <Unregistered Version of Home>
     return (
         <div className={'home-container'}>
             <div className={'btn-container'}>
-                <a className={'btn home-navigation-link'} href={'/login'}> Login </a>
+                <Button variant={'contained'} color={'primary'} href={'/login'}>Login</Button>
             </div>
             <div className={'btn-container'}>
-                <a className={'btn home-navigation-link'} href={'/register'}> Register </a>
+                <Button variant={'contained'} color={'primary'} href={'/register'}>Register</Button>
             </div>
         </div>
 
