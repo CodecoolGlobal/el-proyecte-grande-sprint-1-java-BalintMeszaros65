@@ -16,17 +16,20 @@ public class AppUserController {
         this.appUserService = appUserService;
     }
 
+    @CrossOrigin
     @PostMapping("/api/user/registration")
     public void registerUser(@RequestBody AppUser appUser) {
         appUserService.saveUser(appUser);
     }
 
+    @CrossOrigin
     @PostMapping("/api/user/registration/check-email")
     @ResponseBody
     public boolean isEmailFree(@RequestParam String email) {
         return !appUserService.checkIfEmailIsPresent(email);
     }
 
+    @CrossOrigin
     @PostMapping("/api/user/login")
     @ResponseBody
     public String loginUser(@RequestParam String email, @RequestParam String password) {
@@ -47,6 +50,14 @@ public class AppUserController {
         } else {
             return "";
         }
+    }
+
+    // for Postman testing
+    @CrossOrigin
+    @PostMapping("/api/user/email")
+    @ResponseBody
+    public AppUser getUserByEmail(@RequestParam String email) {
+        return appUserService.getUserByEmail(email);
     }
 
 }
