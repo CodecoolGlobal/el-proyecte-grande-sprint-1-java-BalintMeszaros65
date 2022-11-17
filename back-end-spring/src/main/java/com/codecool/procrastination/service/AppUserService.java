@@ -13,7 +13,7 @@ import java.util.UUID;
 public class AppUserService {
 
 
-    private AppUserDao appUserDao;
+    private final AppUserDao appUserDao;
 
     @Autowired
     public AppUserService(AppUserDao appUserDao) {
@@ -30,6 +30,15 @@ public class AppUserService {
             return optionalAppUser.get();
         } else {
             throw new NoSuchElementException("No user find by given id.\n");
+        }
+    }
+
+    public AppUser getUserByEmail(String email) {
+        Optional<AppUser> optionalAppUser = appUserDao.getUserByEmail(email);
+        if (optionalAppUser.isPresent()) {
+            return optionalAppUser.get();
+        } else {
+            throw new NoSuchElementException("No user find by given email.\n");
         }
     }
 
