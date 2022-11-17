@@ -29,7 +29,7 @@ public class AppUserController {
 
     @PostMapping("/api/user/login")
     @ResponseBody
-    public String loginUser(@RequestParam String email, String password) {
+    public String loginUser(@RequestParam String email, @RequestParam String password) {
         AppUser appUser;
         if (!isEmailFree(email)) {
             try {
