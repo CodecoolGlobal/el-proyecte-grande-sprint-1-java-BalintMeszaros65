@@ -5,7 +5,9 @@ import './Navbar.css';
 export function Navbar(){
     return (
         <div className={'navbar-container'}>
-            <div className={'logo-container'}> logo </div>
+            <div className={'logo-container'}>
+                <p className={'logo-text'}>Procrastination</p>
+            </div>
         </div>
     )
 }
