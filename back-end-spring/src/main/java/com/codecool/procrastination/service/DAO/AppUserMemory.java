@@ -18,39 +18,28 @@ public class AppUserMemory implements AppUserDao {
     }
 
     @Override
-    public AppUser getUserById(UUID id) {
-        Optional<AppUser> optionalAppUser = users.stream()
+    public Optional<AppUser> getUserById(UUID id) {
+        return users.stream()
                 .filter(appUser -> appUser.getId().equals(id))
                 .findFirst();
-        if (optionalAppUser.isPresent()) {
-            return optionalAppUser.get();
-        } else {
-            throw new NoSuchElementException("No user find by given id.\n");
-        }
+
     }
 
     @Override
-    public AppUser getUserByEmail(String email) {
-        Optional<AppUser> optionalAppUser = users.stream()
+    public Optional<AppUser> getUserByEmail(String email) {
+        return users.stream()
                 .filter(appUser -> appUser.getEmail().equals(email))
                 .findFirst();
-        if (optionalAppUser.isPresent()) {
-            return optionalAppUser.get();
-        } else {
-            throw new NoSuchElementException("No user find by given email.\n");
-        }
     }
 
     @Override
-    public void updateUser(AppUser updatedUser) {
-        UUID idToBeUpdated = updatedUser.getId();
-        AppUser oldUser = getUserById(idToBeUpdated);
+    public void updateUser(AppUser oldUser, AppUser updatedUser) {
         users.remove(oldUser);
         users.add(updatedUser);
     }
 
     @Override
-    public void deleteUserById(UUID id) {
-        users.remove(getUserById(id));
+    public void deleteUserById(AppUser appUser) {
+        users.remove(appUser);
     }
 }
