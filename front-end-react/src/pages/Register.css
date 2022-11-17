@@ -6,3 +6,7 @@
 .text-field {
     margin-top: 20px;
 }
+
+.hiddenRegisterButton {
+    display: none;
+}
