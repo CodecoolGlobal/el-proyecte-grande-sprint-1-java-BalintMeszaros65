@@ -2,3 +2,20 @@
     margin: 0;
     padding: 0;
 }
+
+.btn {
+    background-color: rgba(217, 0, 255, 0.78);
+    padding: 15px;
+    border-radius: 10px;
+    text-decoration: none;
+    color: white;
+    margin: 10px
+}
+
+li {
+    list-style: none;
+}
+
+ol {
+    display: flex;
+}
