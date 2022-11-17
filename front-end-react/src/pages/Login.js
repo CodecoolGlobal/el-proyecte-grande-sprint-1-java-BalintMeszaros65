@@ -4,6 +4,7 @@ import '../components/Navbar.css';
 
 export function Login(){
     return (
+
         <Grid className={'grid'}>
             <Paper className={'paper'}>
                 <Grid align={'center'}>
