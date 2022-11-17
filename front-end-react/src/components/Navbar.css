@@ -1,0 +1,13 @@
+.navbar-container {
+    background-color: greenyellow;
+    width: 100%;
+    height: 50px;
+}
+
+.logo-container {
+    background-color: blueviolet;
+    width: 200px;
+    height: 50px;
+    float: right;
+    text-align: center;
+}
