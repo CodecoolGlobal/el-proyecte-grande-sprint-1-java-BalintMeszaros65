@@ -16,9 +16,9 @@ public class AppUserController {
         appUserService.saveUser(appUser);
     }
 
-    @PostMapping("/api/user/registration/check-email")
+    @PostMapping("/api/user/registration/check-email/{email}")
     @ResponseBody
-    public boolean isEmailFree(@RequestParam String email) {
+    public boolean isEmailFree(@PathVariable String email) {
         return appUserService.checkIfEmailIsPresent(email);
     }
 
