@@ -1,23 +1,22 @@
 package com.codecool.procrastination.model;
 
-import java.net.URL;
 import java.util.UUID;
 
 public class AppUser {
-    private UUID id;
-    private URL gitProfile;
-    private URL journeyProfile;
+    private final UUID id;
+    private String gitProfile;
+    private String journeyProfile;
     private String userName;
     private String email;
-    // TODO authentication and hash
     private String password;
 
-    public AppUser(URL gitProfile, URL journeyProfile, String userName, String email, String password) {
+    public AppUser(String gitProfile, String journeyProfile, String userName, String email, String password) {
         this.id = UUID.randomUUID();
         this.gitProfile = gitProfile;
         this.journeyProfile = journeyProfile;
         this.userName = userName;
         this.email = email;
+        // TODO hash password
         this.password = password;
     }
 
@@ -25,11 +24,11 @@ public class AppUser {
         return id;
     }
 
-    public URL getGitProfile() {
+    public String getGitProfile() {
         return gitProfile;
     }
 
-    public URL getJourneyProfile() {
+    public String getJourneyProfile() {
         return journeyProfile;
     }
 
@@ -39,5 +38,9 @@ public class AppUser {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }
