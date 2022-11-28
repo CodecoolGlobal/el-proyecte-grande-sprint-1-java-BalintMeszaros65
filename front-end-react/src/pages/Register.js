@@ -1,65 +1,57 @@
 import React, {useState} from 'react';
 import './Register.css';
-import {Button, Grid, Paper, TextField, Typography} from '@mui/material';
 
-function sendRegistrationData () {
-    const request = {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        body: JSON.stringify()
-    }
+function sendRegistrationData(form) {
+    console.log(form.email);
+    // const request = {
+    //     method: 'POST',
+    //     headers: {'Content-Type': 'application/json'},
+    //     body: JSON.stringify(form)
+    // }
 }
 
 
-
-
-export function Register(){
+export function Register() {
     const [emailValue, setEmailValue] = useState('');
+    const [emailValid, setEmailValid] = useState(false);
 
 
-    const [emailValid, setEmailValid] = useState('');
-
-   /*
-    const sendEmailToCheck =  () => {
-        // teszt   http://localhost:8080/api/user/registration     all data
-        fetch(`http://localhost:8080/api/user/email-check?email=${emailValue}`)
-            .then(res => res.json())
-            .then( //json => //this.setState({ data: json }));
+    const sendEmailToCheck = () => {
+        fetch(`http://localhost:8080/api/user/registration/check-email/${emailValue}`)
+            .then()
     }
-*/
+
 
     const validateEmail = () => {
         if (/\S+@\S+\.\S+/.test(emailValue)) {
-            setEmailValid('Valid Email :)');
+            setEmailValid(true);
         } else {
-            setEmailValid('Enter valid email!')
+            setEmailValid(false)
         }
     }
     return (
-        <Grid className={'grid'}>
-            <Paper className={'paper'}>
-                <Grid align={'center'}>
-                    <h2>Sign Up</h2>
-                    <Typography className={'typography'} variant={'caption'}>Fill this form for create an account!</Typography>
-                </Grid>
-                <form action={'http://localhost:8080/api/user/registration'} method={'POST'} encType={'multipart/form-data'} >
-                    <TextField name={'gitProfile'} fullWidth label={'Git Profile'} className={'text-field'} placeholder={'Enter your Git profile'}/>
-                    <TextField name={'journeyProfile'} fullWidth label={'Journey Profile'} className={'text-field'} placeholder={'Enter your Journey profile'}/>
-                    <TextField name={'userName'} fullWidth label={'Username'} className={'text-field'} placeholder={'Enter your Username'}/>
-                    <TextField name={'email'} fullWidth label={'E-mail'} className={'text-field'} placeholder={'Enter your E-mail'}  onChange={
-                        (emailValue) =>  {
-                            setEmailValue(emailValue.target.value)
-                            validateEmail()
-                        }
-                    }/>
-                    <TextField name={'password'} fullWidth label={'Password'} className={'text-field'} placeholder={'Enter your Password'}/>
-                    <TextField fullWidth label={'Password again'} className={'text-field'} placeholder={'Enter your Password again'}/>
-                    <Button className={'hiddenRegisterButton'} type={'submit'} variant={'contained'} color={'primary'} >Sign up</Button>
-                </form>
-                <p>{emailValue}</p>
-                <p>{emailValid}</p>
-            </Paper>
-        </Grid>
-
+        <div>
+            <h2>Sign Up</h2>
+            <form onSubmit={(form) => sendRegistrationData(form.target)}>
+                <input type={'text'} name={'gitProfile'} placeholder={'Enter your Git profile'}/>
+                <input type={'text'} name={'journeyProfile'} placeholder={'Enter your Journey profile'}/>
+                <input type={'text'} name={'userName'} placeholder={'Enter your Username'}/>
+                <input type={'text'} name={'email'} placeholder={'Enter your E-mail'}
+                       onChange={
+                           (value) => {
+                               setTimeout(() => {
+                                   setEmailValue(value.target.value)
+                                   validateEmail()
+                               }, 100);
+                           }
+                       }/>
+                <input type={'password'} name={'password'} className={'text-field'}
+                       placeholder={'Enter your Password'}/>
+                <input type={'password'} name={'passwordRe'} placeholder={'Enter your Password again'}/>
+                <button hidden={!emailValid} type={'submit'} color={'primary'}>
+                    Sign up
+                </button>
+            </form>
+        </div>
     )
 }
