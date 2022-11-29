@@ -10,10 +10,6 @@ import java.util.UUID;
 
 @Entity
 public class AppUser {
-    private final UUID id;
-    private String gitProfile;
-    private String journeyProfile;
-
     // TODO not null annotations
 
     @Id
@@ -49,5 +45,9 @@ public class AppUser {
 
     public String getEmail() {
         return email;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }
