@@ -10,6 +10,9 @@ import java.util.NoSuchElementException;
 
 @RestController
 public class AppUserController {
+    // TODO return String response error if the appUser misses attributes
+    // TODO Crossorigin with url
+    // TODO return dtos
 
     private final AppUserService appUserService;
     private final ModelMapper modelMapper;
@@ -21,7 +24,7 @@ public class AppUserController {
     }
 
 
-    // TODO return response error if the appUser misses attributes
+
     @CrossOrigin
     @PostMapping("/api/user/registration")
     public void registerUser(@RequestBody AppUser appUser) {
@@ -45,15 +48,18 @@ public class AppUserController {
                 appUser = appUserService.getUserByEmail(email);
                 // TODO hash password
                 if (appUser.getPassword().equals(password)) {
-                    // TODO hash
+                    // TODO hashed token
                     return appUser.getId().toString();
                 } else {
+                    // TODO error
                     return "";
                 }
             } catch (NoSuchElementException exception) {
+                // TODO error
                 return "";
             }
         } else {
+            // TODO error
             return "";
         }
     }
