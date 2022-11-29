@@ -11,6 +11,8 @@ import java.util.UUID;
 @Entity
 public class AppUser {
 
+    // TODO not null annotations
+
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
