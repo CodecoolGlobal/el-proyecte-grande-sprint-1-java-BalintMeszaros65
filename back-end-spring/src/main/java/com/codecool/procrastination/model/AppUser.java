@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
-import java.net.URL;
 import java.util.UUID;
 
 @Entity
@@ -17,9 +16,9 @@ public class AppUser {
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
     @NotNull
-    private URL gitProfile;
+    private String gitProfile;
     @NotNull
-    private URL journeyProfile;
+    private String journeyProfile;
     @NotNull
     private String userName;
     // TODO authentication and hash
@@ -36,11 +35,11 @@ public class AppUser {
         return id;
     }
 
-    public URL getGitProfile() {
+    public String getGitProfile() {
         return gitProfile;
     }
 
-    public URL getJourneyProfile() {
+    public String getJourneyProfile() {
         return journeyProfile;
     }
 
@@ -54,5 +53,17 @@ public class AppUser {
 
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String toString() {
+        return "AppUser{" +
+                "id=" + id +
+                ", gitProfile=" + gitProfile +
+                ", journeyProfile=" + journeyProfile +
+                ", userName='" + userName + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
 }
