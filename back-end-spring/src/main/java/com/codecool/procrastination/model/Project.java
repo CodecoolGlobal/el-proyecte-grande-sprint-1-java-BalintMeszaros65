@@ -20,7 +20,8 @@ public class Project {
     private String projectName;
     private String teamName;
     private URL gitRepo;
-    private boolean finished;
+    private boolean finished = false;
+
     @ManyToMany
     private Set<AppUser> members;
 
