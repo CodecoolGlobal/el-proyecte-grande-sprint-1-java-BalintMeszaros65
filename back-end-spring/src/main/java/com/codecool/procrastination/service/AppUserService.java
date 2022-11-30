@@ -20,10 +20,6 @@ public class AppUserService {
         this.appUserRepository = appUserRepository;
     }
 
-    public void saveUser(AppUser appUser) {
-        appUserRepository.save(appUser);
-    }
-
     public AppUser getUserById(UUID id) {
         Optional<AppUser> optionalAppUser = appUserRepository.findById(id);
         if (optionalAppUser.isPresent()) {
@@ -46,4 +42,28 @@ public class AppUserService {
         return appUserRepository.existsByEmail(email);
     }
 
+    public void registerUser(AppUser appUser) {
+        if (appUser.getUserName() == null || appUser.getEmail() == null || appUser.getPassword() == null
+                || appUser.getGitProfile() == null || appUser.getJourneyProfile() == null) {
+            throw new NullPointerException("Missing one or more attribute(s) in AppUser\n");
+        } else {
+            appUserRepository.save(appUser);
+        }
+    }
+
+    public String loginUser(AppUser appUser) {
+        Optional<AppUser> optionalAppUser = appUserRepository.getUserByEmail(appUser.getEmail());
+        if (optionalAppUser.isPresent()) {
+            AppUser savedAppUser = optionalAppUser.get();
+            // TODO hashed passwords
+            if (savedAppUser.getPassword().equals(appUser.getPassword())) {
+                // TODO hashed token
+                return savedAppUser.getId().toString();
+            } else {
+                throw new NoSuchElementException();
+            }
+        } else {
+            throw new NoSuchElementException();
+        }
+    }
 }
