@@ -16,7 +16,7 @@ public class GlobalControllerExceptionHandler {
     public void handleNotFound() {}
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler({SQLException.class, NoSuchElementException.class})
-    public void handleBadRequest() {}
+    @ExceptionHandler({SQLException.class, NullPointerException.class})
+    public void handleBadSQLRequest() {}
 
 }
