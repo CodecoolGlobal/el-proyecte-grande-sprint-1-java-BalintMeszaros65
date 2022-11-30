@@ -1,7 +1,7 @@
 package com.codecool.procrastination.service;
 
 import com.codecool.procrastination.model.AppUser;
-import com.codecool.procrastination.service.DAO.AppUserDao;
+import com.codecool.procrastination.repositories.AppUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -13,19 +13,19 @@ import java.util.UUID;
 public class AppUserService {
 
 
-    private final AppUserDao appUserDao;
+    private final AppUserRepository appUserRepository;
 
     @Autowired
-    public AppUserService(AppUserDao appUserDao) {
-        this.appUserDao = appUserDao;
+    public AppUserService(AppUserRepository appUserRepository) {
+        this.appUserRepository = appUserRepository;
     }
 
     public void saveUser(AppUser appUser) {
-        appUserDao.saveUser(appUser);
+        appUserRepository.save(appUser);
     }
 
     public AppUser getUserById(UUID id) {
-        Optional<AppUser> optionalAppUser = appUserDao.getUserById(id);
+        Optional<AppUser> optionalAppUser = appUserRepository.findById(id);
         if (optionalAppUser.isPresent()) {
             return optionalAppUser.get();
         } else {
@@ -33,18 +33,8 @@ public class AppUserService {
         }
     }
 
-    public AppUser getUserByEmail(String email) {
-        Optional<AppUser> optionalAppUser = appUserDao.getUserByEmail(email);
-        if (optionalAppUser.isPresent()) {
-            return optionalAppUser.get();
-        } else {
-            throw new NoSuchElementException("No user find by given email.\n");
-        }
-    }
-
     public boolean checkIfEmailIsPresent(String email) {
-        Optional<AppUser> optionalAppUser = appUserDao.getUserByEmail(email);
-        return optionalAppUser.isPresent();
+        return appUserRepository.existsByEmail(email);
     }
 
 }

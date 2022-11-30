@@ -1,34 +1,43 @@
 package com.codecool.procrastination.model;
 
+import org.hibernate.annotations.GenericGenerator;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import java.net.URL;
 import java.util.UUID;
 
+@Entity
 public class AppUser {
-    private final UUID id;
-    private String gitProfile;
-    private String journeyProfile;
+
+    // TODO not null annotations
+
+    @Id
+    @GeneratedValue(generator = "uuid2")
+    @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
+    private UUID id;
+    private URL gitProfile;
+    private URL journeyProfile;
     private String userName;
+    // TODO authentication and hash
     private String email;
+    // TODO authentication and hash
     private String password;
 
-    public AppUser(String gitProfile, String journeyProfile, String userName, String email, String password) {
-        this.id = UUID.randomUUID();
-        this.gitProfile = gitProfile;
-        this.journeyProfile = journeyProfile;
-        this.userName = userName;
-        this.email = email;
-        // TODO hash password
-        this.password = password;
+    public AppUser() {
+
     }
 
     public UUID getId() {
         return id;
     }
 
-    public String getGitProfile() {
+    public URL getGitProfile() {
         return gitProfile;
     }
 
-    public String getJourneyProfile() {
+    public URL getJourneyProfile() {
         return journeyProfile;
     }
 
@@ -38,9 +47,5 @@ public class AppUser {
 
     public String getEmail() {
         return email;
-    }
-
-    public String getPassword() {
-        return password;
     }
 }
