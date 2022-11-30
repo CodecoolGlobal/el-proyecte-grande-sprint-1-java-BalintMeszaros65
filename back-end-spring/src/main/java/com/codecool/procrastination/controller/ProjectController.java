@@ -4,14 +4,13 @@ import com.codecool.procrastination.model.Project;
 import com.codecool.procrastination.model.AppUser;
 import com.codecool.procrastination.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
 
 @RestController
+@RequestMapping("api/project")
 public class ProjectController {
 
     private final ProjectService projectService;
@@ -21,10 +20,15 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
-    @PostMapping("api/project/save")
+    @PostMapping()
     public void saveProject(@RequestBody Project project) {projectService.saveProject(project);}
 
+    @PostMapping("/new_member/{id}")
+    public void addNewMember(@PathVariable UUID id, @RequestBody AppUser appUser) {projectService.addNewMember(id, appUser);}
 
-    @PostMapping("api/project/addMember")
-    public void addNewMember(@RequestBody UUID id, AppUser appUser) {projectService.addNewMember(id, appUser);}
+    @PostMapping("/change_status/{id}")
+    public void changeProjectStatus(@PathVariable UUID id) {projectService.changeProjectStatus(id);}
+
+    @GetMapping("/{id}")
+    public Project getProjectById (@PathVariable UUID id) {return projectService.getProjectById(id);}
 }
