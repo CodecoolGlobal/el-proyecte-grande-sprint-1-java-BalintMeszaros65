@@ -32,21 +32,55 @@ export function Register() {
             setEmailValid(false);
         }
     }
+/*
+    componentDidMount() {
+        // Simple POST request with a JSON body using fetch
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ title: 'React POST Request Example' })
+        };
+        fetch('https://reqres.in/api/posts', requestOptions)
+            .then(response => response.json())
+            .then(data => this.setState({ postId: data.id }));
+    }
+ */
 
+    async function fetchForCheckEmail(){
 
-    // todo to function
-    const sendEmailToCheck = () => {
-        fetch(`http://localhost:8080/api/user/registration/check-email/${emailValue}`)
-            .then()
+            let emailForBackendCheck = { 'email' : emailValue};
+
+        const requestOptions = {
+            method: 'POST',
+            mode: 'cors',
+            headers: { 'Content-Type': 'application/json',}
+
+        };
+
+        console.log(requestOptions)
+        //      ASYNC FETCH
+        const response = await fetch('http://10.44.22.187:8080/api/user/registration/check-email/megaseves@gmail.com',
+            requestOptions);
+        const data = await response.json();
+        console.log(data);
+
+        /* //       NORMAL FETCH
+        fetch('https:.....', requestOptions)
+            .then(response => response.json())
+            .then(data => console.log(data));
+
+         */
     }
 
+
+
     // todo
-    function sendRegistrationData(form) {
-        console.log(form.email);
+    function sendRegistrationData() {
+
         const request = {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(form)
+            body: JSON.stringify()
         }
         // fetch()
     }
@@ -88,7 +122,10 @@ export function Register() {
                            setPasswordValue2(value.target.value)
                        }}/>
 
-                {(isFormFilled()) && <button type={'submit'}>
+                {(isFormFilled()) && <button type={'submit'} onClick={async (e) => {
+                    e.preventDefault()
+                    await fetchForCheckEmail()
+                }}>
                     Sign up
                 </button>}
 

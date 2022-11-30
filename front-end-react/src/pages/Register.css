@@ -1,11 +1,7 @@
 .reg-form-container {
     display: flex;
     background-color: #2fffce;
-    /*
-    position: absolute;
 
-
-     */
     top: 10%;
     width: 300px;
     bottom: 12%;
