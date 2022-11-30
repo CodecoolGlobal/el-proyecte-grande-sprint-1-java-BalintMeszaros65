@@ -20,7 +20,42 @@ public class Project {
     private String projectName;
     private String teamName;
     private URL gitRepo;
+    private boolean finished;
     @ManyToMany
     private Set<AppUser> members;
 
+    public Project() {
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public String getProjectName() {
+        return projectName;
+    }
+
+    public String getTeamName() {
+        return teamName;
+    }
+
+    public URL getGitRepo() {
+        return gitRepo;
+    }
+
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public Set<AppUser> getMembers() {
+        return members;
+    }
+
+    public void addNewMember (AppUser appuser ) {
+        members.add(appuser);
+    }
+
+    public void changeStatus () {
+        finished = !finished;
+    }
 }
