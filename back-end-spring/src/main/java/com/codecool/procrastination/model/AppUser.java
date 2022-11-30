@@ -5,22 +5,27 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 import java.net.URL;
 import java.util.UUID;
 
 @Entity
 public class AppUser {
-    // TODO not null annotations
 
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "org.hibernate.id.UUIDGenerator")
     private UUID id;
+    @NotNull
     private URL gitProfile;
+    @NotNull
     private URL journeyProfile;
+    @NotNull
     private String userName;
     // TODO authentication and hash
+    @NotNull
     private String email;
+    @NotNull
     private String password;
 
     public AppUser() {
