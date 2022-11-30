@@ -1,13 +1,20 @@
 .navbar-container {
-    background-color: greenyellow;
+    background-color: white;
     width: 100%;
     height: 50px;
+    box-shadow: 1px 4px 5px 0px rgba(0,0,0,0.09);
+    -webkit-box-shadow: 1px 4px 5px 0px rgba(0,0,0,0.09);
+    -moz-box-shadow: 1px 4px 5px 0px rgba(0,0,0,0.09);
 }
 
 .logo-container {
-    background-color: blueviolet;
     width: 200px;
     height: 50px;
     float: right;
     text-align: center;
+}
+.logo-text {
+    margin-top: 14px;
+    font-size: 16px;
+    font-weight: bold;
 }
