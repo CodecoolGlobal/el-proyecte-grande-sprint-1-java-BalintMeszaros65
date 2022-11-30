@@ -17,38 +17,20 @@ export function Register() {
 
     function isFormFilled() {
         return ((passwordValue1 === passwordValue2)
-            && passwordValue1      //    .length > 0       not needed, works the same:
+            && passwordValue1.length > 4
             && gitFormValue
             && journeyFormValue
-            && useNameFormValue
+            && useNameFormValue.length > 4
             && emailValid);
     }
 
 
     function validateEmail() {
-        if (/\S+@\S+\.\S+/.test(emailValue)) {
-            setEmailValid(true); //TODO switch to @sendEmailToCheck
-        } else {
-            setEmailValid(false);
-        }
+        setEmailValid(/\S+@\S+\.\S+/.test(emailValue));
     }
-/*
-    componentDidMount() {
-        // Simple POST request with a JSON body using fetch
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ title: 'React POST Request Example' })
-        };
-        fetch('https://reqres.in/api/posts', requestOptions)
-            .then(response => response.json())
-            .then(data => this.setState({ postId: data.id }));
-    }
- */
+
 
     async function fetchForCheckEmail(){
-
-            let emailForBackendCheck = { 'email' : emailValue};
 
         const requestOptions = {
             method: 'POST',
@@ -57,38 +39,17 @@ export function Register() {
 
         };
 
-        console.log(requestOptions)
         //      ASYNC FETCH
-        const response = await fetch('http://10.44.22.187:8080/api/user/registration/check-email/megaseves@gmail.com',
+        const response = await fetch(`http://localhost:8080/api/user/registration/check-email/${emailValue}`,
             requestOptions);
         const data = await response.json();
         console.log(data);
-
-        /* //       NORMAL FETCH
-        fetch('https:.....', requestOptions)
-            .then(response => response.json())
-            .then(data => console.log(data));
-
-         */
-    }
-
-
-
-    // todo
-    function sendRegistrationData() {
-
-        const request = {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify()
-        }
-        // fetch()
     }
 
 
     return (
         <div className={'reg-form-container'}>
-            <form onSubmit={(form) => sendRegistrationData(form.target)}>
+            <form>
                 <h2>Sign Up</h2>
 
                 <p>Git Profile</p>
