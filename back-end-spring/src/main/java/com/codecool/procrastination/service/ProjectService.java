@@ -20,17 +20,12 @@ public class ProjectService {
         this.projectRepository = projectRepository;
     }
 
-    public void saveProject (Project project, AppUser user) {
-        UUID existingProjectId = exist(project.getGitRepo());
-        if (existingProjectId != null) {
-            project = getProjectById(existingProjectId);
-        }
-        project.addNewUser(user);
-        projectRepository.save(project);
+    private List<Project> getAllProject() {
+        return projectRepository.findAll();
     }
 
-    private UUID exist (String gitrepo) {
-        List<Project> projects = projectRepository.findAll();
+    private UUID checkForExistingProject(String gitrepo) {
+        List<Project> projects = getAllProject();
         for (Project project:projects) {
             if(project.getGitRepo().equals(gitrepo)) {
                 return project.getId();
@@ -39,7 +34,20 @@ public class ProjectService {
         return null;
     }
 
-    public Project getProjectById (UUID id) {
+    private void deleteAbandonedProject(Project project) {
+        projectRepository.delete(project);
+    }
+
+    public void saveProject(Project project, AppUser user) {
+        UUID existingProjectId = checkForExistingProject(project.getGitRepo());
+        if (existingProjectId != null) {
+            project = getProjectById(existingProjectId);
+        }
+        project.addNewUser(user);
+        projectRepository.save(project);
+    }
+
+    public Project getProjectById(UUID id) {
         Optional<Project> project = projectRepository.findById(id);
         return project.orElse(null);
     }
@@ -50,19 +58,34 @@ public class ProjectService {
         projectRepository.save(project);
     }
 
-    public Set<Project> getProjectsByUserId(UUID userId) {
+    public Set<Project> getProjectsByUser(AppUser user) {
         Set<Project> userProjects = new HashSet<>();
-        List<Project> projects = projectRepository.findAll();
+        List<Project> projects = getAllProject();
         for (Project project: projects) {
-            if (project.isUserAMember(userId)) {
+            if (project.isUserAMember(user)) {
                 userProjects.add(project);
             }
         }
         return userProjects;
     }
 
-    public boolean isUserAContributor (UUID userId, UUID projectId) {
+    public boolean isUserAContributor(AppUser user, UUID projectId) {
         Project project = getProjectById(projectId);
-        return project.isUserAMember(userId);
+        return project.isUserAMember(user);
+    }
+
+    public void addUserByGitRepository(String gitRepo, AppUser user) {
+        UUID existingProjectId = checkForExistingProject(gitRepo);
+        if (existingProjectId != null) {
+            saveProject(getProjectById(existingProjectId), user);
+        }
+    }
+
+    public void leaveProject(UUID projectId, AppUser user) {
+        Project project = getProjectById(projectId);
+        project.removeUser(user);
+        if (project.isProjectAbandoned()) {
+            deleteAbandonedProject(project);
+        }
     }
 }
