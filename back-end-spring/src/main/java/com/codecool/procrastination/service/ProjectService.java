@@ -39,13 +39,21 @@ public class ProjectService {
         projectRepository.delete(project);
     }
 
+    private boolean isProjectDatasFullfileld(Project project) {
+        return project.getProjectName() != null && project.getGitRepo() != null && project.getTeamName() != null;
+    }
+
     public void saveProject(Project project, AppUser user) {
         UUID existingProjectId = checkForExistingProjectByGitRepo(project.getGitRepo());
         if (existingProjectId != null) {
             project = getProjectById(existingProjectId);
         }
-        project.addNewUser(user);
-        projectRepository.save(project);
+        if (isProjectDatasFullfileld(project)) {
+            project.addNewUser(user);
+            projectRepository.save(project);
+        } else {
+            throw new CustomExceptions.MissingAttributeException("You have to fill all the field");
+        }
     }
 
     public Project getProjectById(UUID id) {
