@@ -21,6 +21,7 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
+    // TODO get AppUser id from Path
     @PostMapping()
     public void saveProject(@RequestBody Project project) {projectService.saveProject(project);}
 
@@ -29,9 +30,11 @@ public class ProjectController {
     public void addNewMember(@PathVariable UUID id, @RequestBody AppUser appUser) {projectService.addNewMember(id, appUser);}
 
     // TODO PUT method, it is changing status not creating
+    // TODO get AppUser id from Path and check if the Project's members contains the AppUser, if not throw error
     @PostMapping("/change_status/{id}")
     public void changeProjectStatus(@PathVariable UUID id) {projectService.changeProjectStatus(id);}
 
+    // TODO get AppUser id from Path and check if the Project's members contains the AppUser, if not throw error
     @GetMapping("/{id}")
     public Project getProjectById (@PathVariable UUID id) {return projectService.getProjectById(id);}
 }
