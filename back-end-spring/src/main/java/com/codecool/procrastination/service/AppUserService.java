@@ -38,7 +38,7 @@ public class AppUserService {
         }
     }
 
-    public boolean checkIfEmailIsPresent(String email) {
+    public boolean IsEmailPresent(String email) {
         return appUserRepository.existsByEmail(email);
     }
 
