@@ -50,7 +50,7 @@ public class ProjectService {
         projectRepository.save(project);
     }
 
-    public Set<Project> getProjectsByMember (UUID memberId) {
+    public Set<Project> getProjectsByMemberId (UUID memberId) {
         Set<Project> memberProjects = new HashSet<>();
         List<Project> projects = projectRepository.findAll();
         for (Project project: projects) {

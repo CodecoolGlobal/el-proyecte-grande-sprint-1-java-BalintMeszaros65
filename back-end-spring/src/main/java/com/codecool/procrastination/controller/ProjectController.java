@@ -7,6 +7,7 @@ import com.codecool.procrastination.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Set;
 import java.util.UUID;
 
 
@@ -23,17 +24,20 @@ public class ProjectController {
         this.appUserService = appUserService;
     }
 
-    @PostMapping("/{user_id}")
+    @PostMapping("/save/{user_id}")
     public void saveProject(@PathVariable UUID user_id, @RequestBody Project project) {
         AppUser user = appUserService.getUserById(user_id);
         projectService.saveProject(project, user);
     }
 
     // TODO get AppUser id from Path and check if the Project's members contains the AppUser, if not throw error
-    @PutMapping("/change_status/{id}")
-    public void changeProjectStatus(@PathVariable UUID id) {projectService.changeProjectStatus(id);}
+    @PutMapping("/change_status/{project_id}")
+    public void changeProjectStatus(@PathVariable UUID project_id) {projectService.changeProjectStatus(project_id);}
 
     // TODO get AppUser id from Path and check if the Project's members contains the AppUser, if not throw error
-    @GetMapping("/{id}")
-    public Project getProjectById (@PathVariable UUID id) {return projectService.getProjectById(id);}
+    @GetMapping("/{project_id}")
+    public Project getProjectById (@PathVariable UUID project_id) {return projectService.getProjectById(project_id);}
+
+    @GetMapping("/{user_id}")
+    public Set<Project> getUserProjects (@PathVariable UUID user_id) {return  projectService.getProjectsByMemberId(user_id);}
 }
