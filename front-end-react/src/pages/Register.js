@@ -34,9 +34,8 @@ export function Register() {
 
 
     async function fetchForCheckEmail() {
-
         const requestOptions = {
-            method: 'POST',
+            method: 'GET',
             mode: 'cors',
             headers: {'Content-Type': 'application/json',}
 
