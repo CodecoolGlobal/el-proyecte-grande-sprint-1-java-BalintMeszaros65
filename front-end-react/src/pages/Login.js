@@ -18,7 +18,7 @@ export function Login(){
         }
 
         const requestOptions = {
-            method: 'POST',
+            method: 'GET',
             mode: 'cors',
             headers: { 'Content-Type': 'application/json',},
             body: JSON.stringify(formData)
