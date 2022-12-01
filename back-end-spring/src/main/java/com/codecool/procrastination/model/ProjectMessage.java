@@ -30,6 +30,18 @@ public class ProjectMessage {
     public ProjectMessage() {
     }
 
+    public String getMessage() {
+        return message;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
+    public void setAppUser(AppUser appUser) {
+        this.appUser = appUser;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
