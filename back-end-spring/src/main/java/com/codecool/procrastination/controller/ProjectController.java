@@ -10,7 +10,7 @@ import java.util.UUID;
 
 
 @RestController
-@RequestMapping("api/project")
+@RequestMapping("/api/project")
 public class ProjectController {
 
     private final ProjectService projectService;
@@ -21,7 +21,14 @@ public class ProjectController {
     }
 
     @PostMapping()
-    public void saveProject(@RequestBody Project project) {projectService.saveProject(project);}
+    public void saveProject(@RequestBody Project project) {
+        UUID existingProjectId = projectService.exist(project.getGitRepo());
+        if (existingProjectId != null) {
+            projectService.addNewMember(existingProjectId, project.getTheOnlyMember());
+        } else {
+            projectService.saveProject(project);
+        }
+    }
 
     @PostMapping("/new_member/{id}")
     public void addNewMember(@PathVariable UUID id, @RequestBody AppUser appUser) {projectService.addNewMember(id, appUser);}

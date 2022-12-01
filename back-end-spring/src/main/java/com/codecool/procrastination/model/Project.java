@@ -6,7 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import java.net.URL;
 import java.util.Set;
 import java.util.UUID;
 
@@ -19,13 +18,14 @@ public class Project {
     private UUID id;
     private String projectName;
     private String teamName;
-    private URL gitRepo;
-    private boolean finished = false;
+    private String gitRepo;
+    private boolean finished;
 
     @ManyToMany
     private Set<AppUser> members;
 
     public Project() {
+        this.finished = false;
     }
 
     public UUID getId() {
@@ -40,7 +40,7 @@ public class Project {
         return teamName;
     }
 
-    public URL getGitRepo() {
+    public String getGitRepo() {
         return gitRepo;
     }
 
@@ -58,5 +58,12 @@ public class Project {
 
     public void changeStatus () {
         finished = !finished;
+    }
+
+    public AppUser getTheOnlyMember() {
+        for (AppUser appUser: members) {
+            return appUser;
+        }
+        return null;
     }
 }

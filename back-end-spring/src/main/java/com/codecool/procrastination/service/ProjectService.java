@@ -6,6 +6,7 @@ import com.codecool.procrastination.repositories.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,7 +20,19 @@ public class ProjectService {
         this.projectRepository = projectRepository;
     }
 
-    public void saveProject (Project project) {projectRepository.save(project);}
+    public void saveProject (Project project) {
+        projectRepository.save(project);
+    }
+
+    public UUID exist (String gitrepo) {
+        List<Project> projects = projectRepository.findAll();
+        for (Project project:projects) {
+            if(project.getGitRepo().equals(gitrepo)) {
+                return project.getId();
+            }
+        }
+        return null;
+    }
 
     public Project getProjectById (UUID id) {
         Optional<Project> project = projectRepository.findById(id);
@@ -37,4 +50,6 @@ public class ProjectService {
         project.changeStatus();
         projectRepository.save(project);
     }
+
+
 }
