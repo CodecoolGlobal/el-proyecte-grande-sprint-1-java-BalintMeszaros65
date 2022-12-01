@@ -1,7 +1,8 @@
 package com.codecool.procrastination.controller;
 
-import com.codecool.procrastination.model.Project;
 import com.codecool.procrastination.model.AppUser;
+import com.codecool.procrastination.model.Project;
+import com.codecool.procrastination.service.AppUserService;
 import com.codecool.procrastination.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -12,33 +13,24 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/project")
 public class ProjectController {
-    // TODO get all Projects by AppUser id
 
     private final ProjectService projectService;
+    private final AppUserService appUserService;
 
     @Autowired
-    public ProjectController(ProjectService projectService) {
+    public ProjectController(ProjectService projectService, AppUserService appUserService) {
         this.projectService = projectService;
+        this.appUserService = appUserService;
     }
 
-    // TODO get AppUser id from Path
-    @PostMapping()
-    public void saveProject(@RequestBody Project project) {
-        UUID existingProjectId = projectService.exist(project.getGitRepo());
-        if (existingProjectId != null) {
-            projectService.addNewMember(existingProjectId, project.getTheOnlyMember());
-        } else {
-            projectService.saveProject(project);
-        }
+    @PostMapping("/{user_id}")
+    public void saveProject(@PathVariable UUID user_id, @RequestBody Project project) {
+        AppUser user = appUserService.getUserById(user_id);
+        projectService.saveProject(project, user);
     }
 
-    // TODO not needed, see ProjectService
-    @PostMapping("/new_member/{id}")
-    public void addNewMember(@PathVariable UUID id, @RequestBody AppUser appUser) {projectService.addNewMember(id, appUser);}
-
-    // TODO PUT method, it is changing status not creating
     // TODO get AppUser id from Path and check if the Project's members contains the AppUser, if not throw error
-    @PostMapping("/change_status/{id}")
+    @PutMapping("/change_status/{id}")
     public void changeProjectStatus(@PathVariable UUID id) {projectService.changeProjectStatus(id);}
 
     // TODO get AppUser id from Path and check if the Project's members contains the AppUser, if not throw error
