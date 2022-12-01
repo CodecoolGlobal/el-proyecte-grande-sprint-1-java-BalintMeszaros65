@@ -25,7 +25,7 @@ public class ProjectService {
         if (existingProjectId != null) {
             project = getProjectById(existingProjectId);
         }
-        project.addNewMember(user);
+        project.addNewUser(user);
         projectRepository.save(project);
     }
 
@@ -50,14 +50,14 @@ public class ProjectService {
         projectRepository.save(project);
     }
 
-    public Set<Project> getProjectsByMemberId (UUID memberId) {
-        Set<Project> memberProjects = new HashSet<>();
+    public Set<Project> getProjectsByUserId(UUID userId) {
+        Set<Project> userProjects = new HashSet<>();
         List<Project> projects = projectRepository.findAll();
         for (Project project: projects) {
-            if (project.findMember(memberId)) {
-                memberProjects.add(project);
+            if (project.findUser(userId)) {
+                userProjects.add(project);
             }
         }
-        return memberProjects;
+        return userProjects;
     }
 }

@@ -58,17 +58,17 @@ public class Project {
         return members;
     }
 
-    public void addNewMember (AppUser appuser) {
-        members.add(appuser);
+    public void addNewUser(AppUser user) {
+        members.add(user);
     }
 
     public void changeStatus () {
         finished = !finished;
     }
 
-    public boolean findMember(UUID memberId) {
-        for (AppUser member: members) {
-            if (memberId == member.getId()) {
+    public boolean findUser(UUID userId) {
+        for (AppUser user: members) {
+            if (userId == user.getId()) {
                 return true;
             }
         }

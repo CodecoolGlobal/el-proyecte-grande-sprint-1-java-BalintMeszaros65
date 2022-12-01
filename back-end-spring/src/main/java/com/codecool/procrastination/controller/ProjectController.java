@@ -39,5 +39,5 @@ public class ProjectController {
     public Project getProjectById (@PathVariable UUID project_id) {return projectService.getProjectById(project_id);}
 
     @GetMapping("/{user_id}")
-    public Set<Project> getUserProjects (@PathVariable UUID user_id) {return  projectService.getProjectsByMemberId(user_id);}
+    public Set<Project> getUserProjects (@PathVariable UUID user_id) {return  projectService.getProjectsByUserId(user_id);}
 }
