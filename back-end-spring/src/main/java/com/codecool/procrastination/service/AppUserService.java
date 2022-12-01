@@ -5,12 +5,13 @@ import com.codecool.procrastination.model.AppUser;
 import com.codecool.procrastination.repositories.AppUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.UUID;
 
-@Component
+@Service
 public class AppUserService {
 
 

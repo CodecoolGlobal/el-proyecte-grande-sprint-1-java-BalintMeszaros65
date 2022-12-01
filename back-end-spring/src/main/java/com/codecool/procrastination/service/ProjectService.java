@@ -5,11 +5,12 @@ import com.codecool.procrastination.model.Project;
 import com.codecool.procrastination.repositories.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 import java.util.UUID;
 
-@Component
+@Service
 public class ProjectService {
     // TODO get all Projects by AppUser id
     // TODO saveProject: check if it already exists and if it is then add member (get id from controller) and save it to DB
