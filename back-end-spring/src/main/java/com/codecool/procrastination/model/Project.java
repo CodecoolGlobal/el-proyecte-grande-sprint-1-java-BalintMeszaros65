@@ -59,21 +59,24 @@ public class Project {
         return members;
     }
 
-    public void addNewUser(AppUser user) {
-        members.add(user);
-    }
-
     public void changeStatus () {
         finished = !finished;
     }
 
-    public boolean isUserAMember(UUID userId) {
-        for (AppUser user: members) {
-            if (userId == user.getId()) {
-                return true;
-            }
-        }
-        return false;
+    public void addNewUser(AppUser user) {
+        members.add(user);
+    }
+
+    public void removeUser(AppUser user) {
+        members.remove(user);
+    }
+
+    public boolean isProjectAbandoned() {
+        return members.isEmpty();
+    }
+
+    public boolean isUserAMember(AppUser user) {
+        return members.contains(user);
     }
 
     @Override
