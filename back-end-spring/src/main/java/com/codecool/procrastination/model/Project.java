@@ -11,6 +11,8 @@ import java.util.UUID;
 
 @Entity
 public class Project {
+    // TODO NotNull annotations
+    // TODO gitRepo unique
 
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -52,7 +54,7 @@ public class Project {
         return members;
     }
 
-    public void addNewMember (AppUser appuser ) {
+    public void addNewMember (AppUser appuser) {
         members.add(appuser);
     }
 
