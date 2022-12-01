@@ -5,14 +5,11 @@ import com.codecool.procrastination.model.Project;
 import com.codecool.procrastination.repositories.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+
+import java.util.*;
 
 @Component
 public class ProjectService {
-    // TODO get all Projects by AppUser id
-    // TODO saveProject: check if it already exists and if it is then add member (get id from controller) and save it to DB
     // TODO add checks if the incoming data from frontend is complete, if not throw errors (merge dev, it has custom exceptions, and exception handling controller)
     // TODO dto layer at the end, low priority
 
@@ -23,11 +20,16 @@ public class ProjectService {
         this.projectRepository = projectRepository;
     }
 
-    public void saveProject (Project project) {
+    public void saveProject (Project project, AppUser user) {
+        UUID existingProjectId = exist(project.getGitRepo());
+        if (existingProjectId != null) {
+            project = getProjectById(existingProjectId);
+        }
+        project.addNewMember(user);
         projectRepository.save(project);
     }
 
-    public UUID exist (String gitrepo) {
+    private UUID exist (String gitrepo) {
         List<Project> projects = projectRepository.findAll();
         for (Project project:projects) {
             if(project.getGitRepo().equals(gitrepo)) {
@@ -42,17 +44,20 @@ public class ProjectService {
         return project.orElse(null);
     }
 
-
-    // TODO not needed, see above
-    public void addNewMember (UUID id, AppUser appUser) {
-        Project project = getProjectById(id);
-        project.addNewMember(appUser);
-        projectRepository.save(project);
-    }
-
     public void changeProjectStatus(UUID id) {
         Project project = getProjectById(id);
         project.changeStatus();
         projectRepository.save(project);
+    }
+
+    public Set<Project> getProjectsByMember (UUID memberId) {
+        Set<Project> memberProjects = new HashSet<>();
+        List<Project> projects = projectRepository.findAll();
+        for (Project project: projects) {
+            if (project.findMember(memberId)) {
+                memberProjects.add(project);
+            }
+        }
+        return memberProjects;
     }
 }
