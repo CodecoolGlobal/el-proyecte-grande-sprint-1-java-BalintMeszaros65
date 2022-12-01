@@ -39,7 +39,7 @@ public class ProjectService {
         projectRepository.delete(project);
     }
 
-    private boolean isProjectDatasFullfileld(Project project) {
+    private boolean isProjectDatasFullFilled(Project project) {
         return project.getProjectName() != null && project.getGitRepo() != null && project.getTeamName() != null;
     }
 
@@ -48,7 +48,7 @@ public class ProjectService {
         if (existingProjectId != null) {
             project = getProjectById(existingProjectId);
         }
-        if (isProjectDatasFullfileld(project)) {
+        if (isProjectDatasFullFilled(project)) {
             project.addNewUser(user);
             projectRepository.save(project);
         } else {
