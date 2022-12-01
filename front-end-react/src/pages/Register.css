@@ -1,3 +1,14 @@
+.error {
+    color: white;
+
+    background: #cb1818;
+    text-align: center;
+    margin: 8px 0;
+    padding: 12px 20px;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
 .reg-form-container {
     display: flex;
     background-color: #2fffce;
@@ -35,6 +46,14 @@ button {
     height: 40px;
     border-radius: 4px;
     box-sizing: border-box;
+}
+
+button:hover {
+    background-color: #eefff5;
+}
+
+button:focus {
+    scale: 95%;
 }
 
 input:focus {
