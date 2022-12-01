@@ -7,8 +7,7 @@ export function Login(){
     const [passwordFormValue, setPasswordFormValue] = useState('');
 
     function isFormFilled(){
-        // todo implement
-        console.log("check if forms filled")
+        return userNameFormValue.length > 2 && passwordFormValue.length > 2;
     }
 
     function fetchForLogin(){
@@ -34,7 +33,7 @@ export function Login(){
                     e.preventDefault()
                     await fetchForLogin()
                 }}>
-                    Sign up
+                    Login
                 </button>}
 
             </form>
