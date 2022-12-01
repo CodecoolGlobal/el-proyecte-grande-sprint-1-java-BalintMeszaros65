@@ -3,16 +3,31 @@ import './Login.css';
 
 export function Login(){
 
-    const [userNameFormValue, setUserNameFormValue] = useState('');
+    const [emailFormValue, setEmailFormValue] = useState('');
     const [passwordFormValue, setPasswordFormValue] = useState('');
 
     function isFormFilled(){
-        return userNameFormValue.length > 2 && passwordFormValue.length > 2;
+        return emailFormValue.length > 2 && passwordFormValue.length > 2;
     }
 
-    function fetchForLogin(){
-        // todo implement
-        console.log("trying to fetch login")
+    async function fetchForLogin(){
+
+        let formData = {
+            'email': emailFormValue,
+            'password': passwordFormValue,
+        }
+
+        const requestOptions = {
+            method: 'POST',
+            mode: 'cors',
+            headers: { 'Content-Type': 'application/json',},
+            body: JSON.stringify(formData)
+        };
+
+        //      ASYNC FETCH
+        const response = await fetch('http://localhost:8080/api/user/login',
+            requestOptions);
+
     }
 
 
@@ -21,9 +36,9 @@ export function Login(){
             <form>
                 <h2>Login</h2>
 
-                <p>Username</p>
-                <input type="text"  name={'username'} placeholder={'Enter your Username'}
-                onChange={(value) => setUserNameFormValue(value.target.value)}/>
+                <p>E-mail</p>
+                <input type="text"  name={'email'} placeholder={'Enter your E-mail'}
+                onChange={(value) => setEmailFormValue(value.target.value)}/>
 
                 <p>Password</p>
                 <input type="text"  name={'password'} placeholder={'Enter your Password'}
