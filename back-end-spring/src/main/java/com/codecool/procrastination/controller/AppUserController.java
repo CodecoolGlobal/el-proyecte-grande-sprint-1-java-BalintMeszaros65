@@ -32,7 +32,7 @@ public class AppUserController {
     @PostMapping("/api/user/registration/check-email/{email}")
     @ResponseBody
     public boolean isEmailFree(@PathVariable String email) {
-        return !appUserService.checkIfEmailIsPresent(email);
+        return !appUserService.IsEmailPresent(email);
     }
 
     @CrossOrigin
