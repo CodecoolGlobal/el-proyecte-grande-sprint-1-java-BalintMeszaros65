@@ -1,6 +1,7 @@
 package com.codecool.procrastination.model;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,7 +14,6 @@ import java.util.UUID;
 
 @Entity
 public class Project {
-    // TODO gitRepo unique
 
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -24,6 +24,7 @@ public class Project {
     @NotNull
     private String teamName;
     @NotNull
+    @UniqueElements
     private String gitRepo;
     private boolean finished;
     @ManyToMany
@@ -66,7 +67,7 @@ public class Project {
         finished = !finished;
     }
 
-    public boolean findUser(UUID userId) {
+    public boolean isUserAMember(UUID userId) {
         for (AppUser user: members) {
             if (userId == user.getId()) {
                 return true;
