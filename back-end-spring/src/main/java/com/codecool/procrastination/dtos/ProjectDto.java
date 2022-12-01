@@ -59,11 +59,13 @@ public class ProjectDto implements Serializable {
         finished = !finished;
     }
 
-    public AppUser getTheOnlyMember() {
-        for (AppUser appUser: members) {
-            return appUser;
+    public boolean findUser(UUID userId) {
+        for (AppUser user: members) {
+            if (userId == user.getId()) {
+                return true;
+            }
         }
-        return null;
+        return false;
     }
 
     @Override
