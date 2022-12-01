@@ -38,7 +38,7 @@ public class ProjectController {
     }
 
     @GetMapping("/{user_id}/{project_id}")
-    public Project getProjectById (@PathVariable UUID user_id, @PathVariable UUID project_id) throws IllegalAccessException {
+    public Project getProjectById(@PathVariable UUID user_id, @PathVariable UUID project_id) throws IllegalAccessException {
         if (projectService.isUserAContributor(appUserService.getUserById(user_id), project_id)) {
             return projectService.getProjectById(project_id);
         } else {
@@ -47,5 +47,12 @@ public class ProjectController {
     }
 
     @GetMapping("/{user_id}")
-    public Set<Project> getUserProjects (@PathVariable UUID user_id) {return  projectService.getProjectsByUser(appUserService.getUserById(user_id));}
+    public Set<Project> getUserProjects (@PathVariable UUID user_id) {
+        return  projectService.getProjectsByUser(appUserService.getUserById(user_id));
+    }
+
+    @DeleteMapping("/leave_project/{user_id}/{project_id}")
+    public void leaveProject(@PathVariable UUID user_id, @PathVariable UUID project_id) {
+        projectService.leaveProject(project_id, appUserService.getUserById(user_id));
+    }
 }
