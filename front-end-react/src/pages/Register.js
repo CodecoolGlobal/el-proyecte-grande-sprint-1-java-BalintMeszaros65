@@ -30,22 +30,37 @@ export function Register() {
     }
 
 
-    async function fetchForCheckEmail(){
+    async function fetchForCheckEmail() {
 
         const requestOptions = {
             method: 'POST',
             mode: 'cors',
-            headers: { 'Content-Type': 'application/json',}
+            headers: {'Content-Type': 'application/json',}
 
         };
 
         //      ASYNC FETCH
         const response = await fetch(`http://localhost:8080/api/user/registration/check-email/${emailValue}`,
             requestOptions);
-        const data = await response.json();
-        console.log(data);
+        return await response.json();
     }
 
+    async function sendRegisterForm() {
+        const requestOptions = {
+            method: 'POST',
+            mode: 'cors',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify(formData)
+        };
+
+        await fetch(`http://localhost:8080/api/user/registration/`, requestOptions)
+    }
+
+    function rejectRegister() {
+        setPasswordValue2('');
+        formData['email'] = '';
+        setBadRegister(true);
+    }
 
     return (
         <div className={'reg-form-container'}>
@@ -70,6 +85,7 @@ export function Register() {
                            setEmailValue(value.target.value)
                            validateEmail()
                        }}/>
+                {(badRegister) && <p className={'error'}><small>This E-Mail is already in use!</small></p>}
 
                 <p>Password</p>
                 <input type={'password'} name={'password'} placeholder={'Enter your Password'}
@@ -83,9 +99,14 @@ export function Register() {
                            setPasswordValue2(value.target.value)
                        }}/>
 
-                {(isFormFilled()) && <button type={'submit'} onClick={async (e) => {
-                    e.preventDefault()
-                    await fetchForCheckEmail()
+                {(isFormFilled()) && <button type={'submit'} onClick={async event => {
+                    event.preventDefault()
+                    if (await fetchForCheckEmail()) {
+                        await sendRegisterForm().then(() => navigate('/'));
+                        setBadRegister(false);
+                    } else {
+                        rejectRegister();
+                    }
                 }}>
                     Sign up
                 </button>}
