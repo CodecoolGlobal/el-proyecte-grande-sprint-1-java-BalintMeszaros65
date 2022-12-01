@@ -28,6 +28,11 @@ public class ProjectController {
         projectService.saveProject(project, appUserService.getUserById(user_id));
     }
 
+    @PostMapping("/add_user/{user_id}/{git_repository}")
+    public void addUserByRepository(@PathVariable UUID user_id ,@PathVariable String git_repository) {
+        projectService.addUserByGitRepository(git_repository ,appUserService.getUserById(user_id));
+    }
+
     @PutMapping("/change_status/{user_id}/{project_id}")
     public void changeProjectStatus(@PathVariable UUID user_id, @PathVariable UUID project_id) throws IllegalAccessException {
         if (projectService.isUserAContributor(appUserService.getUserById(user_id), project_id)) {
