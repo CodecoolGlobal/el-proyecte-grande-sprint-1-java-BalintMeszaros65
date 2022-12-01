@@ -54,10 +54,15 @@ public class ProjectService {
         Set<Project> userProjects = new HashSet<>();
         List<Project> projects = projectRepository.findAll();
         for (Project project: projects) {
-            if (project.findUser(userId)) {
+            if (project.isUserAMember(userId)) {
                 userProjects.add(project);
             }
         }
         return userProjects;
+    }
+
+    public boolean isUserAContributor (UUID userId, UUID projectId) {
+        Project project = getProjectById(projectId);
+        return project.isUserAMember(userId);
     }
 }

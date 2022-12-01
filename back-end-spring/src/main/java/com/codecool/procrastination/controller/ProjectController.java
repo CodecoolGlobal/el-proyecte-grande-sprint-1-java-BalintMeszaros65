@@ -30,13 +30,23 @@ public class ProjectController {
         projectService.saveProject(project, user);
     }
 
-    // TODO get AppUser id from Path and check if the Project's members contains the AppUser, if not throw error
-    @PutMapping("/change_status/{project_id}")
-    public void changeProjectStatus(@PathVariable UUID project_id) {projectService.changeProjectStatus(project_id);}
+    @PutMapping("/change_status/{user_id}/{project_id}")
+    public void changeProjectStatus(@PathVariable UUID user_id, @PathVariable UUID project_id) throws IllegalAccessException {
+        if (projectService.isUserAContributor(user_id, project_id)) {
+            projectService.changeProjectStatus(project_id);
+        } else {
+            throw new IllegalAccessException("You are trying to change a repository what you are not part of!");
+        }
+    }
 
-    // TODO get AppUser id from Path and check if the Project's members contains the AppUser, if not throw error
-    @GetMapping("/{project_id}")
-    public Project getProjectById (@PathVariable UUID project_id) {return projectService.getProjectById(project_id);}
+    @GetMapping("/{user_id}/{project_id}")
+    public Project getProjectById (@PathVariable UUID user_id, @PathVariable UUID project_id) throws IllegalAccessException {
+        if (projectService.isUserAContributor(user_id, project_id)) {
+            return projectService.getProjectById(project_id);
+        } else {
+            throw new IllegalAccessException("You are trying to reach a repository what you are not part of!");
+        }
+    }
 
     @GetMapping("/{user_id}")
     public Set<Project> getUserProjects (@PathVariable UUID user_id) {return  projectService.getProjectsByUserId(user_id);}
