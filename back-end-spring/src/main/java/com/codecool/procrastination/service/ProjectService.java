@@ -1,5 +1,6 @@
 package com.codecool.procrastination.service;
 
+import com.codecool.procrastination.exceptions.CustomExceptions;
 import com.codecool.procrastination.model.AppUser;
 import com.codecool.procrastination.model.Project;
 import com.codecool.procrastination.repositories.ProjectRepository;
@@ -24,7 +25,7 @@ public class ProjectService {
         return projectRepository.findAll();
     }
 
-    private UUID checkForExistingProject(String gitrepo) {
+    private UUID checkForExistingProjectByGitRepo(String gitrepo) {
         List<Project> projects = getAllProject();
         for (Project project:projects) {
             if(project.getGitRepo().equals(gitrepo)) {
@@ -39,7 +40,7 @@ public class ProjectService {
     }
 
     public void saveProject(Project project, AppUser user) {
-        UUID existingProjectId = checkForExistingProject(project.getGitRepo());
+        UUID existingProjectId = checkForExistingProjectByGitRepo(project.getGitRepo());
         if (existingProjectId != null) {
             project = getProjectById(existingProjectId);
         }
@@ -49,11 +50,15 @@ public class ProjectService {
 
     public Project getProjectById(UUID id) {
         Optional<Project> project = projectRepository.findById(id);
-        return project.orElse(null);
+        if (project.isPresent()) {
+            return project.orElse(null);
+        } else {
+            throw new CustomExceptions.WrongProjectIdException("This project doesn't exist");
+        }
     }
 
-    public void changeProjectStatus(UUID id) {
-        Project project = getProjectById(id);
+    public void changeProjectStatus(UUID projectId) {
+        Project project = getProjectById(projectId);
         project.changeStatus();
         projectRepository.save(project);
     }
@@ -75,9 +80,11 @@ public class ProjectService {
     }
 
     public void addUserByGitRepository(String gitRepo, AppUser user) {
-        UUID existingProjectId = checkForExistingProject(gitRepo);
+        UUID existingProjectId = checkForExistingProjectByGitRepo(gitRepo);
         if (existingProjectId != null) {
             saveProject(getProjectById(existingProjectId), user);
+        } else {
+            throw new CustomExceptions.WrongGitRepositoryException("There is no project with this repository");
         }
     }
 
