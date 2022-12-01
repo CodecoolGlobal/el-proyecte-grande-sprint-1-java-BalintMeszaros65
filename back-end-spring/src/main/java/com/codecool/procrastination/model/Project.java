@@ -62,11 +62,13 @@ public class Project {
         finished = !finished;
     }
 
-    public AppUser getTheOnlyMember() {
-        for (AppUser appUser: members) {
-            return appUser;
+    public boolean findMember(UUID memberId) {
+        for (AppUser member: members) {
+            if (memberId == member.getId()) {
+                return true;
+            }
         }
-        return null;
+        return false;
     }
 
     @Override
