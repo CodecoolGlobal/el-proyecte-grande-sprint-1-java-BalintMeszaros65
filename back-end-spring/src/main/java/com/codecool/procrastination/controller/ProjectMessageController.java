@@ -34,6 +34,7 @@ public class ProjectMessageController {
     // TODO dto layer?
     @CrossOrigin
     @GetMapping("/api/messages/{project_id}")
+    // TODO logic to service layer
     public List<String> getAllMessagesByProjectIdOrderedByTimestamp(@PathVariable(name = "project_id") UUID projectId) {
         List<ProjectMessage> projectMessages = projectMessageService.getAllMessagesByProjectIdOrderedByTimestamp(projectId);
         return projectMessages.stream()
@@ -43,6 +44,7 @@ public class ProjectMessageController {
 
     @CrossOrigin
     @GetMapping("/api/messages/{project_id}/{user_id}")
+    // TODO logic to service layer
     public void saveProjectMessage(@PathVariable(name = "project_id") UUID projectId,
                                    @PathVariable(name = "user_id") UUID userId,
                                    @RequestBody ProjectMessage projectMessage) {

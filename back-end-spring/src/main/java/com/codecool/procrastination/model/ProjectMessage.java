@@ -56,6 +56,7 @@ public class ProjectMessage {
     }
 
     @Override
+    // TODO slice nanosec and sec
     public String toString() {
         return timestamp.toString()  +
                 " - " +
