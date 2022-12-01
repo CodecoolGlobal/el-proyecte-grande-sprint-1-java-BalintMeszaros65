@@ -11,7 +11,6 @@ import java.util.*;
 
 @Component
 public class ProjectService {
-    // TODO add checks if the incoming data from frontend is complete, if not throw errors (merge dev, it has custom exceptions, and exception handling controller)
     // TODO dto layer at the end, low priority
 
     private final ProjectRepository projectRepository;
