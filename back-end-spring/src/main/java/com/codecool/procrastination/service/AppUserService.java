@@ -1,5 +1,6 @@
 package com.codecool.procrastination.service;
 
+import com.codecool.procrastination.exceptions.CustomExceptions;
 import com.codecool.procrastination.model.AppUser;
 import com.codecool.procrastination.repositories.AppUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,9 +46,13 @@ public class AppUserService {
     public void registerUser(AppUser appUser) {
         if (appUser.getUserName() == null || appUser.getEmail() == null || appUser.getPassword() == null
                 || appUser.getGitProfile() == null || appUser.getJourneyProfile() == null) {
-            throw new NullPointerException("Missing one or more attribute(s) in AppUser\n");
+            throw new CustomExceptions.MissingAttributeException("Missing one or more attribute(s) in AppUser\n");
         } else {
-            appUserRepository.save(appUser);
+            if (IsEmailPresent(appUser.getEmail())) {
+                throw new CustomExceptions.EmailAlreadyUsedException("Email is already registered.\n");
+            } else {
+                appUserRepository.save(appUser);
+            }
         }
     }
 
@@ -60,10 +65,10 @@ public class AppUserService {
                 // TODO hashed token
                 return savedAppUser.getId().toString();
             } else {
-                throw new NoSuchElementException();
+                throw new CustomExceptions.WrongEmailOrPasswordException("Unable to login.\n");
             }
         } else {
-            throw new NoSuchElementException();
+            throw new CustomExceptions.WrongEmailOrPasswordException("Unable to login.\n");
         }
     }
 }
