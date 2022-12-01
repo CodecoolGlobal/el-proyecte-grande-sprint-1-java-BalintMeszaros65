@@ -24,21 +24,27 @@ export function Login(props) {
         const requestOptions = {
             method: 'POST',
             mode: 'cors',
-            headers: {'Content-Type': 'application/json'},
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
             body: JSON.stringify(formData)
         };
-           //   ASYNC FETCH
-        // try {
-            const data = await (await fetch('http://localhost:8080/api/user/login',
-                requestOptions)).json();
-            console.log(data)
-            // setLoggedInUserId(data);
-            // console.log(loggedInUserID);
-            navigate('/');
-        // } catch (e) {
-          //  rejectLogin()
-        // }
 
+        await fetch('http://localhost:8080/api/user/login', requestOptions)
+            .then(response => {
+                if (response.ok) {
+                    return response;
+                } else {
+                    console.log(response.errored);
+                    rejectLogin();
+                }
+            }).then(data => data.text())
+            .then(data => {
+                console.log(data);
+                setLoggedInUserId(data)
+                navigate('/');
+            });
     }
 
     function rejectLogin() {

@@ -6,7 +6,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin
 @RestController
 public class AppUserController {
     // TODO Crossorigin with url
@@ -21,18 +20,21 @@ public class AppUserController {
         this.modelMapper = modelMapper;
     }
 
+    @CrossOrigin
     @PostMapping("/api/user/registration")
     public void registerUser(@RequestBody AppUser appUser) {
         appUserService.registerUser(appUser);
     }
 
+    @CrossOrigin
     @GetMapping("/api/user/registration/check-email/{email}")
     @ResponseBody
     public boolean isEmailFree(@PathVariable String email) {
         return !appUserService.IsEmailPresent(email);
     }
 
-    @GetMapping("/api/user/login")
+    @CrossOrigin
+    @PostMapping("/api/user/login")
     @ResponseBody
     public String loginUser(@RequestBody AppUser appUser) {
         return appUserService.loginUser(appUser);
