@@ -20,4 +20,7 @@ public class GlobalControllerExceptionHandler {
     @ExceptionHandler({SQLException.class, NullPointerException.class, AlreadyBoundException.class})
     public void handleBadSQLRequest() {}
 
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(IllegalAccessException.class)
+    public void handleUnauthorizedRequest() {}
 }

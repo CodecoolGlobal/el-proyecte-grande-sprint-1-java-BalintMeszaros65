@@ -35,7 +35,7 @@ public class ProjectController {
         if (projectService.isUserAContributor(user_id, project_id)) {
             projectService.changeProjectStatus(project_id);
         } else {
-            throw new IllegalAccessException("You are trying to change a repository what you are not part of!");
+            throw new IllegalAccessException("You are trying to change a repository what you are not part of!\n");
         }
     }
 
@@ -44,7 +44,7 @@ public class ProjectController {
         if (projectService.isUserAContributor(user_id, project_id)) {
             return projectService.getProjectById(project_id);
         } else {
-            throw new IllegalAccessException("You are trying to reach a repository what you are not part of!");
+            throw new IllegalAccessException("You are trying to reach a repository what you are not part of!\n");
         }
     }
 
