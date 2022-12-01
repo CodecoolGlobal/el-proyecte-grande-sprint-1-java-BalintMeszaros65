@@ -21,6 +21,7 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
+    @CrossOrigin
     @PostMapping()
     public void saveProject(@RequestBody Project project) {projectService.saveProject(project);}
 
@@ -29,9 +30,11 @@ public class ProjectController {
     public void addNewMember(@PathVariable UUID id, @RequestBody AppUser appUser) {projectService.addNewMember(id, appUser);}
 
     // TODO PUT method, it is changing status not creating
+    @CrossOrigin
     @PostMapping("/change_status/{id}")
     public void changeProjectStatus(@PathVariable UUID id) {projectService.changeProjectStatus(id);}
 
+    @CrossOrigin
     @GetMapping("/{id}")
     public Project getProjectById (@PathVariable UUID id) {return projectService.getProjectById(id);}
 }

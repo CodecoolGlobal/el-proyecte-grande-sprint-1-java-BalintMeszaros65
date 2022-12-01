@@ -21,4 +21,8 @@ public class ProjectMessageService {
     public List<ProjectMessage> getAllMessagesByProjectIdOrderedByTimestamp(UUID projectId) {
         return projectMessageRepository.findAllByProjectIdOrderByTimestamp(projectId);
     }
+
+    public void saveProjectMessage(ProjectMessage projectMessage) {
+        projectMessageRepository.save(projectMessage);
+    }
 }
