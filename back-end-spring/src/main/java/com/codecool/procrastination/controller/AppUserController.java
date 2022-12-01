@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class AppUserController {
+    // TODO Crossorigin with url
+    // TODO return dtos
 
     private final AppUserService appUserService;
     private final ModelMapper modelMapper;
@@ -19,16 +21,24 @@ public class AppUserController {
     }
 
 
-    // TODO return response error if the appUser misses attributes
+
+    @CrossOrigin
     @PostMapping("/api/user/registration")
     public void registerUser(@RequestBody AppUser appUser) {
-        appUserService.saveUser(appUser);
+        appUserService.registerUser(appUser);
     }
 
+    @CrossOrigin
     @PostMapping("/api/user/registration/check-email/{email}")
     @ResponseBody
     public boolean isEmailFree(@PathVariable String email) {
-        return appUserService.checkIfEmailIsPresent(email);
+        return !appUserService.IsEmailPresent(email);
     }
 
+    @CrossOrigin
+    @PostMapping("/api/user/login")
+    @ResponseBody
+    public String loginUser(@RequestBody AppUser appUser) {
+        return appUserService.loginUser(appUser);
+    }
 }
