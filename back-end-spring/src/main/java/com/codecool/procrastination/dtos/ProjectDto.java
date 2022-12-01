@@ -83,7 +83,12 @@ public class ProjectDto implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProjectDto entity = (ProjectDto) o;
-        return finished == entity.finished && id.equals(entity.id) && projectName.equals(entity.projectName) && teamName.equals(entity.teamName) && gitRepo.equals(entity.gitRepo) && members.equals(entity.members);
+        return finished == entity.finished &&
+                id.equals(entity.id) &&
+                projectName.equals(entity.projectName) &&
+                teamName.equals(entity.teamName) &&
+                gitRepo.equals(entity.gitRepo) &&
+                members.equals(entity.members);
     }
 
     @Override
