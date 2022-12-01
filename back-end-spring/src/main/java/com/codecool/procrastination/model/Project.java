@@ -6,12 +6,13 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import java.net.URL;
 import java.util.Set;
 import java.util.UUID;
 
 @Entity
 public class Project {
+    // TODO NotNull annotations
+    // TODO gitRepo unique
 
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -19,7 +20,7 @@ public class Project {
     private UUID id;
     private String projectName;
     private String teamName;
-    private URL gitRepo;
+    private String gitRepo;
     private boolean finished = false;
 
     @ManyToMany
@@ -40,7 +41,7 @@ public class Project {
         return teamName;
     }
 
-    public URL getGitRepo() {
+    public String getGitRepo() {
         return gitRepo;
     }
 
@@ -52,7 +53,7 @@ public class Project {
         return members;
     }
 
-    public void addNewMember (AppUser appuser ) {
+    public void addNewMember (AppUser appuser) {
         members.add(appuser);
     }
 
