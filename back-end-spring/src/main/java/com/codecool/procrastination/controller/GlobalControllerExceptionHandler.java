@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.rmi.AlreadyBoundException;
 import java.sql.SQLException;
 import java.util.NoSuchElementException;
 
@@ -16,7 +17,7 @@ public class GlobalControllerExceptionHandler {
     public void handleNotFound() {}
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler({SQLException.class, NullPointerException.class})
+    @ExceptionHandler({SQLException.class, NullPointerException.class, AlreadyBoundException.class})
     public void handleBadSQLRequest() {}
 
 }

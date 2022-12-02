@@ -2,6 +2,7 @@ package com.codecool.procrastination.model;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -23,6 +24,7 @@ public class AppUser {
     private String userName;
     // TODO authentication and hash
     @NotNull
+    @Column(unique = true)
     private String email;
     @NotNull
     private String password;

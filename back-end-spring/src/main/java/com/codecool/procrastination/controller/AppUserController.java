@@ -20,8 +20,6 @@ public class AppUserController {
         this.modelMapper = modelMapper;
     }
 
-
-
     @CrossOrigin
     @PostMapping("/api/user/registration")
     public void registerUser(@RequestBody AppUser appUser) {
@@ -29,10 +27,10 @@ public class AppUserController {
     }
 
     @CrossOrigin
-    @PostMapping("/api/user/registration/check-email/{email}")
+    @GetMapping("/api/user/registration/check-email/{email}")
     @ResponseBody
     public boolean isEmailFree(@PathVariable String email) {
-        return !appUserService.checkIfEmailIsPresent(email);
+        return !appUserService.IsEmailPresent(email);
     }
 
     @CrossOrigin
