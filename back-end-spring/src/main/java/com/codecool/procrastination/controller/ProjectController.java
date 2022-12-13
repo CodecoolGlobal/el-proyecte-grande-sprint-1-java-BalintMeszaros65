@@ -23,16 +23,19 @@ public class ProjectController {
         this.appUserService = appUserService;
     }
 
+    @CrossOrigin
     @PostMapping("/save/{user_id}")
     public void saveProject(@PathVariable UUID user_id, @RequestBody Project project) {
         projectService.saveProject(project, appUserService.getUserById(user_id));
     }
 
+    @CrossOrigin
     @PostMapping("/add_user/{user_id}/{git_repository}")
     public void addUserByRepository(@PathVariable UUID user_id ,@PathVariable String git_repository) {
         projectService.addUserByGitRepository(git_repository ,appUserService.getUserById(user_id));
     }
 
+    @CrossOrigin
     @PutMapping("/change_status/{user_id}/{project_id}")
     public void changeProjectStatus(@PathVariable UUID user_id, @PathVariable UUID project_id) throws IllegalAccessException {
         if (projectService.isUserAContributor(appUserService.getUserById(user_id), project_id)) {
@@ -42,6 +45,7 @@ public class ProjectController {
         }
     }
 
+    @CrossOrigin
     @GetMapping("/{user_id}/{project_id}")
     public Project getProjectById(@PathVariable UUID user_id, @PathVariable UUID project_id) throws IllegalAccessException {
         if (projectService.isUserAContributor(appUserService.getUserById(user_id), project_id)) {
@@ -51,11 +55,13 @@ public class ProjectController {
         }
     }
 
+    @CrossOrigin
     @GetMapping("/{user_id}")
     public Set<Project> getUserProjects (@PathVariable UUID user_id) {
         return  projectService.getProjectsByUser(appUserService.getUserById(user_id));
     }
 
+    @CrossOrigin
     @DeleteMapping("/leave_project/{user_id}/{project_id}")
     public void leaveProject(@PathVariable UUID user_id, @PathVariable UUID project_id) {
         projectService.leaveProject(project_id, appUserService.getUserById(user_id));

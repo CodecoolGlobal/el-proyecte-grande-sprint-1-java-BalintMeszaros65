@@ -6,10 +6,11 @@ import com.codecool.procrastination.model.Project;
 import com.codecool.procrastination.repositories.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-@Component
+@Service
 public class ProjectService {
     // TODO dto layer at the end, low priority
 
