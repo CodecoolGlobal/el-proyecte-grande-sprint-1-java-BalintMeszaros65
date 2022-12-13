@@ -99,6 +99,7 @@ public class ProjectService {
     public void leaveProject(UUID projectId, AppUser user) {
         Project project = getProjectById(projectId);
         project.removeUser(user);
+        projectRepository.save(project);
         if (project.isProjectAbandoned()) {
             deleteAbandonedProject(project);
         }

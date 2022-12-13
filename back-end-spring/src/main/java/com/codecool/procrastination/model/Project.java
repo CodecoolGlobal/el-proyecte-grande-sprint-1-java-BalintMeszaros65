@@ -3,10 +3,7 @@ package com.codecool.procrastination.model;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.UniqueElements;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,7 +21,7 @@ public class Project {
     @NotNull
     private String teamName;
     @NotNull
-    @UniqueElements
+    @Column(unique = true)
     private String gitRepo;
     private boolean finished;
     @ManyToMany
