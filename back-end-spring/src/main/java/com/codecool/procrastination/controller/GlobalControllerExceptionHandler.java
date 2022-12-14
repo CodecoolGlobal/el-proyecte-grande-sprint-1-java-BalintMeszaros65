@@ -3,6 +3,7 @@ package com.codecool.procrastination.controller;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.rmi.AlreadyBoundException;
@@ -12,12 +13,12 @@ import java.util.NoSuchElementException;
 @ControllerAdvice
 public class GlobalControllerExceptionHandler {
 
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(NoSuchElementException.class)
-    public void handleNotFound() {}
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler({SQLException.class, NullPointerException.class, AlreadyBoundException.class})
-    public void handleBadSQLRequest() {}
+    @ExceptionHandler({SQLException.class, NullPointerException.class, AlreadyBoundException.class, NoSuchElementException.class})
+    @ResponseBody
+    public String handleBadSQLRequest(Throwable exception) {
+        return exception.getMessage();
+    }
 
 }
