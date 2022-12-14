@@ -21,6 +21,7 @@ public class AppUserController {
         this.modelMapper = modelMapper;
     }
 
+    // TODO after auth ResponseEntity with generated token
     @PostMapping("/api/user/registration")
     public void registerUser(@RequestBody AppUser appUser) {
         appUserService.registerUser(appUser);
