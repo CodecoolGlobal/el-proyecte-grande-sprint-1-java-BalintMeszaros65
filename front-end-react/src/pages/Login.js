@@ -1,8 +1,11 @@
 import React, {useState} from 'react';
 import './Login.css';
 import {useNavigate} from "react-router-dom";
+import { hasJWT } from "../components/RouteGuard";
 
 export function Login(props) {
+
+
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState(
@@ -11,7 +14,12 @@ export function Login(props) {
             'password': ''
         });
     const [badLogin, setBadLogin] = useState(false);
-    const [loggedInUserID, setLoggedInUserId] = useState('');
+
+
+    function setTokenToLocalStorage() {
+        localStorage.setItem('token', JSON.stringify(props.token));
+    }
+
 
     function isFormFilled() {
         return formData['email'].length > 2
@@ -20,6 +28,7 @@ export function Login(props) {
     }
 
     async function fetchForLogin() {
+
         setBadLogin(false);
         const requestOptions = {
             method: 'POST',
@@ -42,9 +51,11 @@ export function Login(props) {
             }).then(data => data.text())
             .then(data => {
                 console.log(data);
-                setLoggedInUserId(data)
+                props.setToken([{'token': data}])
+                setTokenToLocalStorage()
                 navigate('/');
-            });
+
+            })
     }
 
     function rejectLogin() {
@@ -80,6 +91,8 @@ export function Login(props) {
                 }}>
                     Login
                 </button>}
+
+                {hasJWT() && <button>Successful login</button>}
             </form>
         </div>
     )

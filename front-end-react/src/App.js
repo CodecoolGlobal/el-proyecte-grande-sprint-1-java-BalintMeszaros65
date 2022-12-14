@@ -7,15 +7,18 @@ import {Navbar} from "./components/Navbar";
 import {HomeWithLoggedIn} from "./pages/HomeWithLoggedIn";
 import {PageNotFound} from "./pages/PageNotFound";
 import './components/FontawsomeIcons';
+import { hasJWT } from "./components/RouteGuard";
+import {useState} from "react";
 
 
 function App() {
-    const token = true;
+    const [token, setToken] = useState([]);
+    console.log(hasJWT())
     return (
         <>
-            <Navbar token={token} />
+            <Navbar setToken={setToken} token={token}/>
             <Router>
-                {token ?
+                {hasJWT() ?
                 <Routes>
                     <Route path={"/"} element={<HomeWithLoggedIn/>} />
                     <Route path={"*"} element={<PageNotFound />} />
@@ -23,7 +26,7 @@ function App() {
                 :
                 <Routes>
                     <Route path={"/"} element={<Home/>} />
-                    <Route path={"/login"} element={<Login/>}/>
+                    <Route path={"/login"} element={<Login setToken={setToken} token={token}/>}/>
                     <Route path={"/register"} element={<Register/>}/>
                     <Route path={"*"} element={<PageNotFound />} />
                 </Routes>
