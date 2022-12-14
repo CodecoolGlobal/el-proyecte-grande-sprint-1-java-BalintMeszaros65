@@ -27,7 +27,7 @@ public class AppUserService {
         if (optionalAppUser.isPresent()) {
             return optionalAppUser.get();
         } else {
-            throw new NoSuchElementException("No user find by given id.\n");
+            throw new NoSuchElementException("No user found by given id.\n");
         }
     }
 
@@ -36,7 +36,7 @@ public class AppUserService {
         if (optionalAppUser.isPresent()) {
             return optionalAppUser.get();
         } else {
-            throw new NoSuchElementException("No user find by given email.\n");
+            throw new NoSuchElementException("No user found by given email.\n");
         }
     }
 
