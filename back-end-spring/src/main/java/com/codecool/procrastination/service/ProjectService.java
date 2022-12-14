@@ -48,22 +48,22 @@ public class ProjectService {
         return appUserService.getUserById(userId);
     }
 
-    private Project getProjectByIdToAuthentication(UUID projectId) {
+    private Project getProjectById(UUID projectId) {
         Optional<Project> project = projectRepository.findById(projectId);
         return project.orElseThrow(() -> new CustomExceptions.WrongProjectIdException("This project doesn't exist"));
     }
 
     private boolean isUserAContributor(UUID userId, UUID projectId){
         AppUser user = getUserById(userId);
-        Project project = getProjectByIdToAuthentication(projectId);
+        Project project = getProjectById(projectId);
         return project.isUserAMember(user);
     }
 
-    public void saveProject(Project project, UUID userId) throws IllegalAccessException {
+    public void saveProject(Project project, UUID userId) {
         AppUser user = getUserById(userId);
         UUID existingProjectId = checkForExistingProjectByGitRepo(project.getGitRepo());
         if (existingProjectId != null) {
-            project = getProjectById(userId, existingProjectId);
+            project = getProjectById(existingProjectId);
         }
         if (isProjectDatasFullFilled(project)) {
             project.addNewUser(user);
@@ -73,7 +73,7 @@ public class ProjectService {
         }
     }
 
-    public Project getProjectById(UUID userId, UUID projectId) throws IllegalAccessException {
+    public Project getProjectByIdWithAuthorization(UUID userId, UUID projectId) throws IllegalAccessException {
         if (isUserAContributor(userId, projectId)) {
             Optional<Project> project = projectRepository.findById(projectId);
             return project.orElseThrow(() -> new CustomExceptions.WrongProjectIdException("This project doesn't exist"));
@@ -84,7 +84,7 @@ public class ProjectService {
 
     public void changeProjectStatus(UUID userId, UUID projectId) throws IllegalAccessException {
         if (isUserAContributor(userId, projectId)) {
-            Project project = getProjectById(userId, projectId);
+            Project project = getProjectByIdWithAuthorization(userId, projectId);
             project.changeStatus();
             projectRepository.save(project);
         } else {
@@ -107,7 +107,7 @@ public class ProjectService {
     public void addUserByGitRepository(String gitRepo, UUID userId) throws IllegalAccessException {
         UUID existingProjectId = checkForExistingProjectByGitRepo(gitRepo);
         if (existingProjectId != null) {
-            saveProject(getProjectById(userId, existingProjectId), userId);
+            saveProject(getProjectByIdWithAuthorization(userId, existingProjectId), userId);
         } else {
             throw new CustomExceptions.WrongGitRepositoryException("There is no project with this repository");
         }
@@ -115,7 +115,7 @@ public class ProjectService {
 
     public void leaveProject(UUID projectId,UUID userId) throws IllegalAccessException {
         AppUser user = getUserById(userId);
-        Project project = getProjectById(userId, projectId);
+        Project project = getProjectByIdWithAuthorization(userId, projectId);
         project.removeUser(user);
         projectRepository.save(project);
         if (project.isProjectAbandoned()) {

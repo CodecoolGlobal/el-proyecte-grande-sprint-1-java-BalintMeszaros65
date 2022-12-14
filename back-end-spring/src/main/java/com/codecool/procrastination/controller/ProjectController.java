@@ -21,7 +21,7 @@ public class ProjectController {
     }
 
     @PostMapping("/save/{user_id}")
-    public void saveProject(@PathVariable UUID user_id, @RequestBody Project project) throws IllegalAccessException {
+    public void saveProject(@PathVariable UUID user_id, @RequestBody Project project) {
         projectService.saveProject(project, user_id);
     }
 
@@ -37,7 +37,7 @@ public class ProjectController {
 
     @GetMapping("/{user_id}/{project_id}")
     public Project getProjectById(@PathVariable UUID user_id, @PathVariable UUID project_id) throws IllegalAccessException {
-        return projectService.getProjectById(user_id, project_id);
+        return projectService.getProjectByIdWithAuthorization(user_id, project_id);
     }
 
     @GetMapping("/{user_id}")

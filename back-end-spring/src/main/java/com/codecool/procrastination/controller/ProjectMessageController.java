@@ -49,7 +49,7 @@ public class ProjectMessageController {
                                    @PathVariable(name = "user_id") UUID userId,
                                    @RequestBody ProjectMessage projectMessage) throws IllegalAccessException {
         AppUser appUser = appUserService.getUserById(userId);
-        Project project = projectService.getProjectById(userId, projectId);
+        Project project = projectService.getProjectByIdWithAuthorization(userId, projectId);
         if (projectMessage.getMessage() == null) {
             throw new CustomExceptions.MissingAttributeException("Missing message.\n");
         } else {
