@@ -20,4 +20,16 @@ public class CustomExceptions {
             super(message);
         }
     }
+
+    public static class WrongProjectIdException extends NoSuchElementException {
+        public WrongProjectIdException(String message) {
+            super(message);
+        }
+    }
+
+    public static class WrongGitRepositoryException extends NoSuchElementException {
+        public WrongGitRepositoryException(String message) {
+            super(message);
+        }
+    }
 }
