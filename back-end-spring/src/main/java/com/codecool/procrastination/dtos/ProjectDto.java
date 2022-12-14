@@ -47,27 +47,6 @@ public class ProjectDto implements Serializable {
         return finished;
     }
 
-    public Set<AppUser> getMembers() {
-        return members;
-    }
-
-    public void addNewMember (AppUser appuser ) {
-        members.add(appuser);
-    }
-
-    public void changeStatus () {
-        finished = !finished;
-    }
-
-    public boolean findUser(UUID userId) {
-        for (AppUser user: members) {
-            if (userId == user.getId()) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     @Override
     public String toString() {
         return "Project{" +

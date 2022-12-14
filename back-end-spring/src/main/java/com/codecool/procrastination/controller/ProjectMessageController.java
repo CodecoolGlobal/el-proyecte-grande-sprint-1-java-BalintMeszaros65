@@ -47,9 +47,9 @@ public class ProjectMessageController {
     // TODO logic to service layer
     public void saveProjectMessage(@PathVariable(name = "project_id") UUID projectId,
                                    @PathVariable(name = "user_id") UUID userId,
-                                   @RequestBody ProjectMessage projectMessage) {
+                                   @RequestBody ProjectMessage projectMessage) throws IllegalAccessException {
         AppUser appUser = appUserService.getUserById(userId);
-        Project project = projectService.getProjectById(projectId);
+        Project project = projectService.getProjectById(userId, projectId);
         if (projectMessage.getMessage() == null) {
             throw new CustomExceptions.MissingAttributeException("Missing message.\n");
         } else {
