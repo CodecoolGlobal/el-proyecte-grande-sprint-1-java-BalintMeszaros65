@@ -14,11 +14,13 @@ public class ProjectService {
 
     private final ProjectRepository projectRepository;
     private final AppUserService appUserService;
+    private final ProjectMessageService projectMessageService;
 
     @Autowired
-    public ProjectService(ProjectRepository projectRepository, AppUserService appUserService) {
+    public ProjectService(ProjectRepository projectRepository, AppUserService appUserService, ProjectMessageService projectMessageService) {
         this.projectRepository = projectRepository;
         this.appUserService = appUserService;
+        this.projectMessageService = projectMessageService;
     }
 
     private List<Project> getAllProject() {
@@ -38,6 +40,7 @@ public class ProjectService {
     }
 
     private void deleteAbandonedProject(Project project) {
+        projectMessageService.deleteAllProjectMessage(project.getId());
         projectRepository.delete(project);
     }
 
@@ -110,11 +113,13 @@ public class ProjectService {
     }
 
     public void addUserByGitRepository(String gitRepo, UUID userId) {
+        AppUser user = getUserById(userId);
         if (isExistingProject(gitRepo)) {
             List<Project> projects = getAllProject();
             for (Project project:projects) {
                 if (project.getGitRepo().equals(gitRepo)) {
-                    saveProject(project, userId);
+                   project.addNewUser(user);
+                   projectRepository.save(project);
                 }
             }
         } else {
