@@ -3,7 +3,7 @@ import './Register.css';
 import {useNavigate} from "react-router-dom";
 
 
-export function Register() {
+export function Register(props) {
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState(
@@ -36,7 +36,6 @@ export function Register() {
     async function fetchForCheckEmail() {
         const requestOptions = {
             method: 'GET',
-            mode: 'cors',
             headers: {'Content-Type': 'application/json',}
 
         };
@@ -50,12 +49,23 @@ export function Register() {
     async function sendRegisterForm() {
         const requestOptions = {
             method: 'POST',
-            mode: 'cors',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(formData)
         };
+        await fetch(`/api/user/registration`, requestOptions)
+            .then(response => {
+                if (response.ok) {
+                    return response;
+                } else {
+                    console.log(response.errored);
+                }
+            }).then(data => data.text())
+            .then(data => {
+                props.setToken([{'token': data}])
+                localStorage.setItem('token', JSON.stringify(data));
+                navigate('/');
 
-        await fetch(`/api/user/registration/`, requestOptions)
+            })
     }
 
     function rejectRegister() {

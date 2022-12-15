@@ -29,10 +29,8 @@ export function Login(props) {
         setBadLogin(false);
         const requestOptions = {
             method: 'POST',
-            mode: 'cors',
             headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify(formData)
         };
