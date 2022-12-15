@@ -40,7 +40,7 @@ public class AppUserService {
     }
 
     public AppUser getUserByEmail(String email) {
-        Optional<AppUser> optionalAppUser = appUserRepository.getUserByEmail(email);
+        Optional<AppUser> optionalAppUser = appUserRepository.findAppUserByEmail(email);
         if (optionalAppUser.isPresent()) {
             return optionalAppUser.get();
         } else {
