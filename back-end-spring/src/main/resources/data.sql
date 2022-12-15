@@ -1,9 +1,16 @@
-INSERT INTO app_user (id, email, git_profile, journey_profile, password, user_name)
-VALUES ('68229fa9-e9bc-4c8a-94c4-25aca83a30a9', 'testemail@gmail.com', 'testgitprofile', 'testjourneyprofile',
+INSERT INTO app_user (id, account_non_expired, account_non_locked, credentials_non_expired, email, enabled,
+                      git_profile, journey_profile, password, user_name)
+VALUES ('68229fa9-e9bc-4c8a-94c4-25aca83a30a9', true, true, true, 'testemail@gmail.com', true, 'testgitprofile', 'testjourneyprofile',
         'testpassword', 'testuser');
-INSERT INTO app_user (id, email, git_profile, journey_profile, password, user_name)
-VALUES ('68229fa9-e9bc-4c8a-94c4-25aca83a30a1', 'testemail2@gmail.com', 'testgitprofile2', 'testjourneyprofile2',
+INSERT INTO app_user (id, account_non_expired, account_non_locked, credentials_non_expired, email, enabled,
+                      git_profile, journey_profile, password, user_name)
+VALUES ('68229fa9-e9bc-4c8a-94c4-25aca83a30a1', true, true, true, 'testemail2@gmail.com', true, 'testgitprofile2', 'testjourneyprofile2',
         'testpassword2', 'testuser2');
+
+INSERT INTO app_user_authorities(app_user_id, authorities)
+VALUES ('68229fa9-e9bc-4c8a-94c4-25aca83a30a9', '0xACED0005737200426F72672E737072696E676672616D65776F726B2E73656375726974792E636F72652E617574686F726974792E53696D706C654772616E746564417574686F72697479000000000000023A0200014C0004726F6C657400124C6A6176612F6C616E672F537472696E673B7870740009524F4C455F55534552');
+INSERT INTO app_user_authorities(app_user_id, authorities)
+VALUES ('68229fa9-e9bc-4c8a-94c4-25aca83a30a1', '0xACED0005737200426F72672E737072696E676672616D65776F726B2E73656375726974792E636F72652E617574686F726974792E53696D706C654772616E746564417574686F72697479000000000000023A0200014C0004726F6C657400124C6A6176612F6C616E672F537472696E673B7870740009524F4C455F55534552');
 INSERT INTO project (id, finished, git_repo, project_name, team_name)
 VALUES ('68229fa9-e9bc-4c8a-94c4-20aca83a30a9', false, 'testgitrepo', 'testproject', 'testteam');
 INSERT INTO project (id, finished, git_repo, project_name, team_name)
