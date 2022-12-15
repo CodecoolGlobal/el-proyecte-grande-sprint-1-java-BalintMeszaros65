@@ -13,24 +13,12 @@ import java.util.NoSuchElementException;
 @ControllerAdvice
 public class GlobalControllerExceptionHandler {
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(NoSuchElementException.class)
-    @ResponseBody
-    public String handleNotFound(NoSuchElementException e) {
-        return e.getMessage();
-    }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler({SQLException.class, NullPointerException.class, AlreadyBoundException.class})
+    @ExceptionHandler({SQLException.class, AlreadyBoundException.class, NoSuchElementException.class})
     @ResponseBody
-    public String handleBadSQLRequest(Throwable e) {
-        return e.getMessage();
+    public String handleBadSQLRequest(Throwable exception) {
+        return exception.getMessage();
     }
 
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    @ExceptionHandler(IllegalAccessException.class)
-    @ResponseBody
-    public String handleUnauthorizedRequest(IllegalAccessException e) {
-        return e.getMessage();
-    }
 }

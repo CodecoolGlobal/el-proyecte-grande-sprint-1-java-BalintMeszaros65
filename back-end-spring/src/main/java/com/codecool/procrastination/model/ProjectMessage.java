@@ -60,7 +60,7 @@ public class ProjectMessage {
     public String toString() {
         return timestamp.toString()  +
                 " - " +
-                appUser.getUserName() +
+                appUser.getRealUserName() +
                 ": " +
                 message;
     }

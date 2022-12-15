@@ -9,27 +9,10 @@ public class CustomExceptions {
         }
     }
 
-    public static class MissingAttributeException extends NullPointerException {
+    public static class MissingAttributeException extends IllegalArgumentException {
         public MissingAttributeException(String message) {
             super(message);
         }
     }
 
-    public static class WrongEmailOrPasswordException extends NoSuchElementException {
-        public WrongEmailOrPasswordException(String message) {
-            super(message);
-        }
-    }
-
-    public static class WrongProjectIdException extends NoSuchElementException {
-        public WrongProjectIdException(String message) {
-            super(message);
-        }
-    }
-
-    public static class WrongGitRepositoryException extends NoSuchElementException {
-        public WrongGitRepositoryException(String message) {
-            super(message);
-        }
-    }
 }
