@@ -1,16 +1,23 @@
 import React from 'react';
 import './Home.css';
-import {Button} from "@mui/material";
+import {useNavigate} from "react-router-dom";
 
+//                <Unregistered Version of Home>
 export function Home() {
-    //                <Unregistered Version of Home>
+
+    let navigate = useNavigate();
+
+    function routeChange(path) {
+        navigate(path)
+    }
+
     return (
         <div className={'home-container'}>
             <div className={'btn-container'}>
-                <Button variant={'contained'} color={'primary'} href={'/login'}>Login</Button>
+                <button color={'primary'}  onClick={() => routeChange(`/login`)}>Login</button>
             </div>
             <div className={'btn-container'}>
-                <Button variant={'contained'} color={'primary'} href={'/register'}>Register</Button>
+                <button color={'primary'} onClick={() => routeChange(`/register`)}>Register</button>
             </div>
         </div>
 
