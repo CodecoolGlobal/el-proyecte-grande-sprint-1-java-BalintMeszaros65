@@ -1,16 +1,17 @@
 package com.codecool.procrastination.model;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Collection;
 import java.util.UUID;
 
 @Entity
-public class AppUser {
+public class AppUser implements UserDetails {
+    // TODO nickname instead of userName
 
     @Id
     @GeneratedValue(generator = "uuid2")
@@ -29,6 +30,21 @@ public class AppUser {
     @NotNull
     private String password;
 
+    @ElementCollection
+    private Collection<GrantedAuthority> authorities;
+
+    @NotNull
+    private boolean accountNonExpired;
+
+    @NotNull
+    private boolean accountNonLocked;
+
+    @NotNull
+    private boolean credentialsNonExpired;
+
+    @NotNull
+    private boolean enabled;
+
     public AppUser() {
 
     }
@@ -45,27 +61,90 @@ public class AppUser {
         return journeyProfile;
     }
 
-    public String getUserName() {
-        return userName;
-    }
-
     public String getEmail() {
         return email;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
     }
 
     public String getPassword() {
         return password;
     }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+    // needed for validating incoming data from frontend
+    public String getRealUserName() {
+        return userName;
+    }
+    // email is the unique id to get UserDetails from DB
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    public void setAuthorities(Collection<GrantedAuthority> authorities) {
+        this.authorities = authorities;
+    }
+
+    public void setAccountNonExpired(boolean accountNonExpired) {
+        this.accountNonExpired = accountNonExpired;
+    }
+
+    public void setAccountNonLocked(boolean accountNonLocked) {
+        this.accountNonLocked = accountNonLocked;
+    }
+
+    public void setCredentialsNonExpired(boolean credentialsNonExpired) {
+        this.credentialsNonExpired = credentialsNonExpired;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return accountNonExpired;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return accountNonLocked;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return credentialsNonExpired;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
+    }
+
     @Override
     public String toString() {
         return "AppUser{" +
                 "id=" + id +
-                ", gitProfile=" + gitProfile +
-                ", journeyProfile=" + journeyProfile +
+                ", gitProfile='" + gitProfile + '\'' +
+                ", journeyProfile='" + journeyProfile + '\'' +
                 ", userName='" + userName + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
+                ", authorities=" + authorities +
+                ", accountNonExpired=" + accountNonExpired +
+                ", accountNonLocked=" + accountNonLocked +
+                ", credentialsNonExpired=" + credentialsNonExpired +
+                ", enabled=" + enabled +
                 '}';
     }
 }
