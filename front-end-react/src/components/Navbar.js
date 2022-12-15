@@ -8,8 +8,7 @@ export function Navbar(props){
 
     function logout() {
         localStorage.setItem("token", "");
-        props.setToken("token", "");
-        console.log("HEEEEEEEEEEEEEEEEEEELLLLOOOOOOOOOOOOOO")
+        //props.setToken("token", "");
     }
 
     return (

@@ -16,10 +16,6 @@ export function Login(props) {
     const [badLogin, setBadLogin] = useState(false);
 
 
-    function setTokenToLocalStorage() {
-        localStorage.setItem('token', JSON.stringify(props.token));
-    }
-
 
     function isFormFilled() {
         return formData['email'].length > 2
@@ -50,9 +46,8 @@ export function Login(props) {
                 }
             }).then(data => data.text())
             .then(data => {
-                console.log(data);
-                props.setToken([{'token': data}])
-                setTokenToLocalStorage()
+                //props.setToken([{'token': data}])
+                localStorage.setItem('token', JSON.stringify(data));
                 navigate('/');
 
             })

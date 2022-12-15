@@ -12,11 +12,11 @@ import {useState} from "react";
 
 
 function App() {
-    const [token, setToken] = useState([]);
-    console.log(hasJWT())
+    //const [token, setToken] = useState('');
+
     return (
         <>
-            <Navbar setToken={setToken} token={token}/>
+            <Navbar />
             <Router>
                 {hasJWT() ?
                 <Routes>
@@ -26,7 +26,7 @@ function App() {
                 :
                 <Routes>
                     <Route path={"/"} element={<Home/>} />
-                    <Route path={"/login"} element={<Login setToken={setToken} token={token}/>}/>
+                    <Route path={"/login"} element={<Login  />}/>
                     <Route path={"/register"} element={<Register/>}/>
                     <Route path={"*"} element={<PageNotFound />} />
                 </Routes>
