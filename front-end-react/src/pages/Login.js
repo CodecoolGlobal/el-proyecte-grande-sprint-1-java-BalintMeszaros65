@@ -46,7 +46,7 @@ export function Login(props) {
                 }
             }).then(data => data.text())
             .then(data => {
-                //props.setToken([{'token': data}])
+                props.setToken([{'token': data}])
                 localStorage.setItem('token', JSON.stringify(data));
                 navigate('/');
 
