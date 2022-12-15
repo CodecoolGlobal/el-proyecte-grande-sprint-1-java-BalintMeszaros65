@@ -1,17 +1,17 @@
 package com.codecool.procrastination.controller;
 
-import com.codecool.procrastination.service.AppUserService;
 import com.codecool.procrastination.model.AppUser;
+import com.codecool.procrastination.service.AppUserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin
 @RestController
 public class AppUserController {
-    // TODO Crossorigin with url
+    // TODO remove Crossorigin with url
     // TODO return dtos
-
     private final AppUserService appUserService;
     private final ModelMapper modelMapper;
 
@@ -23,8 +23,8 @@ public class AppUserController {
 
     // TODO after auth ResponseEntity with generated token
     @PostMapping("/api/user/registration")
-    public void registerUser(@RequestBody AppUser appUser) {
-        appUserService.registerUser(appUser);
+    public ResponseEntity<String> registerUser(@RequestBody AppUser appUser) {
+        return appUserService.registerUser(appUser);
     }
 
     @GetMapping("/api/user/registration/check-email/{email}")
@@ -33,9 +33,10 @@ public class AppUserController {
         return !appUserService.IsEmailPresent(email);
     }
 
-    @GetMapping("/api/user/login")
-    @ResponseBody
-    public String loginUser(@RequestBody AppUser appUser) {
-        return appUserService.loginUser(appUser);
-    }
+    // TODO delete after auth?
+//    @GetMapping("/api/user/login")
+//    @ResponseBody
+//    public String loginUser(@RequestBody AppUser appUser) {
+//        return appUserService.loginUser(appUser);
+//    }
 }
