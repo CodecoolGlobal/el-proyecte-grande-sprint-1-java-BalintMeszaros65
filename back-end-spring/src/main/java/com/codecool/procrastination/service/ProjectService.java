@@ -11,7 +11,6 @@ import java.util.*;
 
 @Service
 public class ProjectService {
-    // TODO dto layer at the end, low priority
 
     private final ProjectRepository projectRepository;
     private final AppUserService appUserService;
@@ -26,20 +25,24 @@ public class ProjectService {
         return projectRepository.findAll();
     }
 
-    private UUID checkForExistingProjectByGitRepo(String gitrepo) {
+
+    //checks for project by git repository
+    private boolean isExistingProject(String gitRepo) {
         List<Project> projects = getAllProject();
         for (Project project:projects) {
-            if(project.getGitRepo().equals(gitrepo)) {
-                return project.getId();
+            if(project.getGitRepo().equals(gitRepo)) {
+                return true;
             }
         }
-        return null;
+        return false;
     }
 
     private void deleteAbandonedProject(Project project) {
         projectRepository.delete(project);
     }
 
+
+    //checks necessary data for saving a new project
     private boolean isProjectDatasFullFilled(Project project) {
         return project.getProjectName() != null && project.getGitRepo() != null && project.getTeamName() != null;
     }
@@ -59,13 +62,14 @@ public class ProjectService {
         return project.isUserAMember(user);
     }
 
+
+    //it checks if the project is already exist or not. If it exists add the user to it if not then create new project
     public void saveProject(Project project, UUID userId) {
         AppUser user = getUserById(userId);
-        UUID existingProjectId = checkForExistingProjectByGitRepo(project.getGitRepo());
-        if (existingProjectId != null) {
-            project = getProjectById(existingProjectId);
+        if (isExistingProject(project.getGitRepo())) {
+            addUserByGitRepository(project.getGitRepo(), userId);
         }
-        if (isProjectDatasFullFilled(project)) {
+        else if (isProjectDatasFullFilled(project)) {
             project.addNewUser(user);
             projectRepository.save(project);
         } else {
@@ -73,6 +77,7 @@ public class ProjectService {
         }
     }
 
+    //return a project with user validation
     public Project getProjectByIdWithAuthorization(UUID userId, UUID projectId) throws IllegalAccessException {
         if (isUserAContributor(userId, projectId)) {
             Optional<Project> project = projectRepository.findById(projectId);
@@ -104,10 +109,14 @@ public class ProjectService {
         return userProjects;
     }
 
-    public void addUserByGitRepository(String gitRepo, UUID userId) throws IllegalAccessException {
-        UUID existingProjectId = checkForExistingProjectByGitRepo(gitRepo);
-        if (existingProjectId != null) {
-            saveProject(getProjectByIdWithAuthorization(userId, existingProjectId), userId);
+    public void addUserByGitRepository(String gitRepo, UUID userId) {
+        if (isExistingProject(gitRepo)) {
+            List<Project> projects = getAllProject();
+            for (Project project:projects) {
+                if (project.getGitRepo().equals(gitRepo)) {
+                    saveProject(project, userId);
+                }
+            }
         } else {
             throw new CustomExceptions.WrongGitRepositoryException("There is no project with this repository");
         }
