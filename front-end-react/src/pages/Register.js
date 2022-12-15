@@ -42,7 +42,7 @@ export function Register() {
         };
 
         //      ASYNC FETCH
-        const response = await fetch(`http://localhost:8080/api/user/registration/check-email/${formData['email']}`,
+        const response = await fetch(`/api/user/registration/check-email/${formData['email']}`,
             requestOptions);
         return await response.json();
     }
@@ -55,7 +55,7 @@ export function Register() {
             body: JSON.stringify(formData)
         };
 
-        await fetch(`http://localhost:8080/api/user/registration/`, requestOptions)
+        await fetch(`/api/user/registration/`, requestOptions)
     }
 
     function rejectRegister() {
@@ -63,7 +63,7 @@ export function Register() {
         formData['email'] = '';
         setBadRegister(true);
     }
-
+    // TODO input onChange lambda replace to useEffect
     return (
         <div className={'reg-form-container'}>
             <form>

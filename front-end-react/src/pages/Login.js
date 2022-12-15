@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import './Login.css';
 import {useNavigate} from "react-router-dom";
-import { hasJWT } from "../components/RouteGuard";
 
 export function Login(props) {
 
@@ -9,10 +8,10 @@ export function Login(props) {
     const navigate = useNavigate();
 
 
-    // userName is email, its called userName because of backend
+    // username is email, it's called `username` because of backend
     const [formData, setFormData] = useState(
         {
-            'email': '',
+            'username': '',
             'password': ''
         });
     const [badLogin, setBadLogin] = useState(false);
@@ -20,7 +19,7 @@ export function Login(props) {
 
 
     function isFormFilled() {
-        return formData['email'].length > 2
+        return formData['username'].length > 2
                 && formData['password'].length > 2
                 && validateEmail();
     }
@@ -38,7 +37,7 @@ export function Login(props) {
             body: JSON.stringify(formData)
         };
 
-        await fetch('http://localhost:8080/api/user/login', requestOptions)
+        await fetch('/api/user/login', requestOptions)
             .then(response => {
                 if (response.ok) {
                     return response;
@@ -56,24 +55,24 @@ export function Login(props) {
     }
 
     function rejectLogin() {
-        formData['email'] = '';
+        formData['username'] = '';
         formData['password'] = '';
         setBadLogin(true);
     }
 
     function validateEmail() {
-        return (/\S+@\S+\.\S+/.test(formData['email']));
+        return (/\S+@\S+\.\S+/.test(formData['username']));
     }
-
+    // TODO input onChange lambda to useEffect
     return (
         <div className={'login-form-container'}>
             <form>
                 <h2>Login</h2>
                 {(badLogin) && <p className={'error'}><small>E-Mail or Password is invalid!</small></p>}
                 <p>E-mail</p>
-                <input value={formData['email']} type="text" name={'email'} placeholder={'Enter your E-mail'}
+                <input value={formData['username']} type="text" name={'email'} placeholder={'Enter your E-mail'}
                        onChange={(value) => {
-                           setFormData(prevFormData => ({...prevFormData, 'email': value.target.value}))
+                           setFormData(prevFormData => ({...prevFormData, 'username': value.target.value}))
                        }}/>
 
                 <p>Password</p>

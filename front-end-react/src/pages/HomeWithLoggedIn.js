@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import './HomeWithLoggedIn.css';
-import {getTokenForCurrentUser, hasJWT} from "../components/RouteGuard";
+import {getTokenForCurrentUser} from "../components/RouteGuard";
 import {NewProjectForm} from "../components/NewProjectForm";
 
 export function HomeWithLoggedIn() {
@@ -9,17 +9,18 @@ export function HomeWithLoggedIn() {
     const [noProjectYet, setNoProjectYet] = useState(false);
 
     useEffect(() => {
+        const user_id = getTokenForCurrentUser();
         const requestOptions = {
                 method: 'GET',
                 mode: 'cors',
                 // TODO inject token to header
                 headers: {
+                    'Authorization': `Bearer ${user_id}`,
                     'Content-Type': 'application/json'
                 }
             }
-            const user_id = getTokenForCurrentUser();
         // TODO get rid of localhost
-        fetch(`http://localhost:8080/api/project/${user_id}`, requestOptions)
+        fetch(`/api/project`, requestOptions)
             .then(response => {
                 return response.json();
             })
