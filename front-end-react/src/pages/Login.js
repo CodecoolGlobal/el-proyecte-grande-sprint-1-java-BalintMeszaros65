@@ -8,6 +8,8 @@ export function Login(props) {
 
     const navigate = useNavigate();
 
+
+    // userName is email, its called userName because of backend
     const [formData, setFormData] = useState(
         {
             'email': '',
@@ -86,8 +88,6 @@ export function Login(props) {
                 }}>
                     Login
                 </button>}
-
-                {hasJWT() && <button>Successful login</button>}
             </form>
         </div>
     )

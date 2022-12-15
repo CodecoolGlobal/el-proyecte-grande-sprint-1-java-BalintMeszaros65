@@ -21,7 +21,7 @@ export function Navbar(props){
                 <div className={'container'}>
                     <div className={'menu-container'}><a href={'/profile'} >Profile</a></div>
 
-                    <div className={'menu-container'}><button onClick={logout} >logout</button>
+                    <div className={'menu-container'}><a href={'/'} onClick={logout} >Logout</a>
 
                     </div>
                 <div className={'new-project-container'}><a href={'/team'} >New Project - New Team <FontAwesomeIcon icon="fa-caret-down" /></a></div>
