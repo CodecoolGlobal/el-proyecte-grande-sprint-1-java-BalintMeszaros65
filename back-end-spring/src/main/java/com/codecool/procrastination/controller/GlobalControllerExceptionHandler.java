@@ -15,7 +15,8 @@ public class GlobalControllerExceptionHandler {
 
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler({SQLException.class, AlreadyBoundException.class, NoSuchElementException.class})
+    @ExceptionHandler({SQLException.class, AlreadyBoundException.class, NoSuchElementException.class,
+            IllegalArgumentException.class})
     @ResponseBody
     public String handleBadSQLRequest(Throwable exception) {
         return exception.getMessage();
