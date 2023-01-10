@@ -1,6 +1,5 @@
 package com.codecool.procrastination.exceptions;
 
-import java.util.NoSuchElementException;
 
 public class CustomExceptions {
     public static class EmailAlreadyUsedException extends IllegalArgumentException {
