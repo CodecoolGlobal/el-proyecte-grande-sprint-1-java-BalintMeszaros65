@@ -24,15 +24,12 @@ public class ProjectMessageService {
     private final ProjectMessageRepository projectMessageRepository;
     private final ProjectService projectService;
     private final AppUserService appUserService;
-    private final ProjectRepository projectRepository;
 
     @Autowired
-    public ProjectMessageService(ProjectMessageRepository projectMessageRepository, ProjectService projectService, AppUserService appUserService,
-                                 ProjectRepository projectRepository) {
+    public ProjectMessageService(ProjectMessageRepository projectMessageRepository, ProjectService projectService, AppUserService appUserService) {
         this.projectMessageRepository = projectMessageRepository;
         this.projectService = projectService;
         this.appUserService = appUserService;
-        this.projectRepository = projectRepository;
     }
 
     public List<String> getAllMessagesByProjectIdOrderedByTimestamp(UUID projectId) {
