@@ -39,7 +39,6 @@ public class ProjectMessageService {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         AppUser appUser = appUserService.getUserByEmail(email);
         // TODO authenticate from context if the user is a member of the project
-        // TODO FIX jpa not working
         List<ProjectMessage> projectMessages = projectMessageRepository.getAllByProjectIdOrderByTimestamp(projectId);
         return projectMessages.stream()
                 .map(ProjectMessage::toString)
