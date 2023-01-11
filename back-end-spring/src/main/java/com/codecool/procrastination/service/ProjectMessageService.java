@@ -19,8 +19,6 @@ import java.util.stream.Collectors;
 @Service
 public class ProjectMessageService {
 
-    Logger log = LoggerFactory.getLogger(ProjectMessageService.class);
-
     private final ProjectMessageRepository projectMessageRepository;
     private final ProjectService projectService;
     private final AppUserService appUserService;
