@@ -20,13 +20,13 @@ public class ProjectMessageController {
 
 
     @CrossOrigin
-    @GetMapping("/api/messages/{project_id}")
+    @GetMapping("/api/messages/load/{project_id}")
     public List<String> getAllMessagesByProjectIdOrderedByTimestamp(@PathVariable(name = "project_id") UUID projectId) {
         return projectMessageService.getAllMessagesByProjectIdOrderedByTimestamp(projectId);
     }
 
     @CrossOrigin
-    @GetMapping("/api/messages/{project_id}/{user_id}")
+    @GetMapping("/api/messages/save/{project_id}/{user_id}")
     public void saveProjectMessage(@PathVariable(name = "project_id") UUID projectId,
                                    @PathVariable(name = "user_id") UUID userId,
                                    @RequestBody ProjectMessage projectMessage) {

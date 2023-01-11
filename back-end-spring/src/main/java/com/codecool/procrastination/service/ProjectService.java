@@ -5,103 +5,91 @@ import com.codecool.procrastination.model.AppUser;
 import com.codecool.procrastination.model.Project;
 import com.codecool.procrastination.repositories.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.Optional;
+import java.util.Set;
+import java.util.UUID;
 
 @Service
 public class ProjectService {
-    // TODO dto layer at the end, low priority
-
     private final ProjectRepository projectRepository;
 
+    private final AppUserService appUserService;
+
     @Autowired
-    public ProjectService(ProjectRepository projectRepository) {
+    public ProjectService(ProjectRepository projectRepository, AppUserService appUserService) {
         this.projectRepository = projectRepository;
+        this.appUserService = appUserService;
     }
 
-    private List<Project> getAllProject() {
-        return projectRepository.findAll();
+    public Project getProjectById(UUID projectId) {
+        Optional<Project> project = projectRepository.findById(projectId);
+        if (project.isPresent()) {
+            return project.get();
+        } else {
+            throw new CustomExceptions.MissingAttributeException("This project doesn't exist");
+        }
     }
 
-    private UUID checkForExistingProjectByGitRepo(String gitrepo) {
-        List<Project> projects = getAllProject();
-        for (Project project:projects) {
-            if(project.getGitRepo().equals(gitrepo)) {
-                return project.getId();
+    public Set<Project> getAllProjectsByUser() {
+        AppUser appUser = getCurrentAppUser();
+        return projectRepository.getProjectsByMembersContains(appUser);
+    }
+
+    private AppUser getCurrentAppUser() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        return appUserService.getUserByEmail(email);
+    }
+
+    private boolean userHasAccess(Project project) {
+        if (project.isUserAMember(getCurrentAppUser())) {
+            return true;
+        } else {
+            throw new CustomExceptions.MissingAttributeException("This user has no rights");
+        }
+    }
+
+    public void leaveProject(UUID projectId) {
+        AppUser appUser = getCurrentAppUser();
+        Project project = getProjectById(projectId);
+        if (userHasAccess(project)) {
+            project.removeUser(appUser);
+            if (project.isProjectAbandoned()) {
+                projectRepository.delete(project);
+            } else {
+                projectRepository.save(project);
             }
         }
-        return null;
     }
 
-    private void deleteAbandonedProject(Project project) {
-        projectRepository.delete(project);
-    }
-
-    private boolean isProjectDatasFullFilled(Project project) {
-        return project.getProjectName() != null && project.getGitRepo() != null && project.getTeamName() != null;
-    }
-
-    public void saveProject(Project project, AppUser user) {
-        UUID existingProjectId = checkForExistingProjectByGitRepo(project.getGitRepo());
-        if (existingProjectId != null) {
-            project = getProjectById(existingProjectId);
-        }
-        if (isProjectDatasFullFilled(project)) {
-            project.addNewUser(user);
+    public void addNewProject(Project project) {
+        String gitRepository = project.getGitRepo();
+        Optional<Project> optionalProject = projectRepository.findProjectByGitRepo(gitRepository);
+        if (optionalProject.isEmpty()) {
             projectRepository.save(project);
         } else {
-            throw new CustomExceptions.MissingAttributeException("You have to fill all the field");
+            UUID projectId = project.getId();
+            joinProject(projectId);
         }
     }
 
-    public Project getProjectById(UUID id) {
-        Optional<Project> project = projectRepository.findById(id);
-        if (project.isPresent()) {
-            return project.orElse(null);
+    private void joinProject(UUID projectId) {
+        Project project = getProjectById(projectId);
+        AppUser appUser = getCurrentAppUser();
+        if (userHasAccess(project)) {
+            project.addNewUser(appUser);
+            projectRepository.save(project);
+        }
+    }
+
+    public void updateProject(Project project) {
+        UUID projectId = project.getId();
+        if (userHasAccess(project) && projectRepository.existsById(projectId)) {
+            projectRepository.save(project);
         } else {
-            throw new CustomExceptions.WrongProjectIdException("This project doesn't exist");
-        }
-    }
-
-    public void changeProjectStatus(UUID projectId) {
-        Project project = getProjectById(projectId);
-        project.changeStatus();
-        projectRepository.save(project);
-    }
-
-    public Set<Project> getProjectsByUser(AppUser user) {
-        Set<Project> userProjects = new HashSet<>();
-        List<Project> projects = getAllProject();
-        for (Project project: projects) {
-            if (project.isUserAMember(user)) {
-                userProjects.add(project);
-            }
-        }
-        return userProjects;
-    }
-
-    public boolean isUserAContributor(AppUser user, UUID projectId) {
-        Project project = getProjectById(projectId);
-        return project.isUserAMember(user);
-    }
-
-    public void addUserByGitRepository(String gitRepo, AppUser user) {
-        UUID existingProjectId = checkForExistingProjectByGitRepo(gitRepo);
-        if (existingProjectId != null) {
-            saveProject(getProjectById(existingProjectId), user);
-        } else {
-            throw new CustomExceptions.WrongGitRepositoryException("There is no project with this repository");
-        }
-    }
-
-    public void leaveProject(UUID projectId, AppUser user) {
-        Project project = getProjectById(projectId);
-        project.removeUser(user);
-        projectRepository.save(project);
-        if (project.isProjectAbandoned()) {
-            deleteAbandonedProject(project);
+            throw new CustomExceptions.MissingAttributeException("This user doesn't have access to this project");
         }
     }
 }
