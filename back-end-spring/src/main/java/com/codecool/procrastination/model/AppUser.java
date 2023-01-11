@@ -30,7 +30,7 @@ public class AppUser implements UserDetails {
     @NotNull
     private String password;
 
-    @ElementCollection(fetch = FetchType.EAGER)
+    @ElementCollection(fetch = FetchType.LAZY)
     private Collection<GrantedAuthority> authorities;
 
     @NotNull
