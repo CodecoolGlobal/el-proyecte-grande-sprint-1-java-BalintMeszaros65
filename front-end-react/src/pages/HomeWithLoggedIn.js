@@ -36,9 +36,6 @@ export function HomeWithLoggedIn() {
                     setProjects(data);
                 }
             });
-            // return hasProjects
-        console.log("teszt for project index =   " + projects)
-
     }, [hasClicked]);
 
 

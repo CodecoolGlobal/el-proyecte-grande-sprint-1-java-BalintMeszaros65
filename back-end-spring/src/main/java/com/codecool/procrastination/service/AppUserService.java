@@ -79,7 +79,7 @@ public class AppUserService {
             AppUser savedAppUser = optionalAppUser.get();
             if (passwordEncoder.matches(appUser.getPassword(), savedAppUser.getPassword())) {
                 String token = jwtUtil.createToken(new HashMap<>(), appUser.getUsername());
-                return ResponseEntity.status(HttpStatus.FOUND).body(token);
+                return ResponseEntity.status(HttpStatus.OK).body(token);
             } else {
                 throw new CustomExceptions.MissingAttributeException("Unable to login");
             }
