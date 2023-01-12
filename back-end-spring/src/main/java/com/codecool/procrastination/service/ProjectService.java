@@ -73,6 +73,7 @@ public class ProjectService {
             project.addNewUser(appUser);
             projectRepository.save(project);
         } else {
+            project = optionalProject.get();
             UUID projectId = project.getId();
             joinProject(projectId);
         }
@@ -81,10 +82,8 @@ public class ProjectService {
     private void joinProject(UUID projectId) {
         Project project = getProjectById(projectId);
         AppUser appUser = getCurrentAppUser();
-        if (userHasAccess(project)) {
-            project.addNewUser(appUser);
-            projectRepository.save(project);
-        }
+        project.addNewUser(appUser);
+        projectRepository.save(project);
     }
 
     public void updateProject(Project project) {
