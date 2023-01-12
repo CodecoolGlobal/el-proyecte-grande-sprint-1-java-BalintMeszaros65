@@ -5,7 +5,7 @@ import com.codecool.procrastination.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -21,7 +21,7 @@ public class ProjectController {
 
     @CrossOrigin
     @GetMapping
-    public Set<Project> getUserProjects() {
+    public List<Project> getUserProjects() {
         return projectService.getAllProjectsByUser();
     }
 

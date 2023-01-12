@@ -5,7 +5,11 @@ import com.codecool.procrastination.model.AppUser;
 import com.codecool.procrastination.model.Project;
 import com.codecool.procrastination.model.ProjectMessage;
 import com.codecool.procrastination.repositories.ProjectMessageRepository;
+import com.codecool.procrastination.repositories.ProjectRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
@@ -29,15 +33,20 @@ public class ProjectMessageService {
     }
 
     public List<String> getAllMessagesByProjectIdOrderedByTimestamp(UUID projectId) {
-        List<ProjectMessage> projectMessages = projectMessageRepository.findAllByProjectIdOrderByTimestamp(projectId);
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        AppUser appUser = appUserService.getUserByEmail(email);
+        // TODO authenticate from context if the user is a member of the project
+        List<ProjectMessage> projectMessages = projectMessageRepository.getAllByProjectIdOrderByTimestamp(projectId);
         return projectMessages.stream()
                 .map(ProjectMessage::toString)
                 .collect(Collectors.toList());
     }
 
-    public void saveProjectMessage(UUID projectId, UUID userId,  ProjectMessage projectMessage) {
+    public void saveProjectMessage(UUID projectId, ProjectMessage projectMessage) {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
         Project project = projectService.getProjectById(projectId);
-        AppUser appUser = appUserService.getUserById(userId);
+        AppUser appUser = appUserService.getUserByEmail(email);
+        // TODO authenticate from context if the user is a member of the project
         if (projectMessage.getMessage() == null) {
             throw new CustomExceptions.MissingAttributeException("Missing message.\n");
         } else {
@@ -47,9 +56,9 @@ public class ProjectMessageService {
         }
     }
 
-    public void deleteAllProjectMessage (UUID projectId) {
-        List<ProjectMessage> projectMessages = projectMessageRepository.findAllByProjectIdOrderByTimestamp(projectId);
-        projectMessageRepository.deleteAll(projectMessages);
-
-    }
+//    public void deleteAllProjectMessage (UUID projectId) {
+//        List<ProjectMessage> projectMessages = projectMessageRepository.findAllByProjectIdOrderByTimestamp(projectId);
+//        projectMessageRepository.deleteAll(projectMessages);
+//
+//    }
 }

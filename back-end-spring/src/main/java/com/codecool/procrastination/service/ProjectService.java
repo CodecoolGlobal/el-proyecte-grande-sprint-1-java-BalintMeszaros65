@@ -8,8 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -33,8 +33,9 @@ public class ProjectService {
         }
     }
 
-    public Set<Project> getAllProjectsByUser() {
+    public List<Project> getAllProjectsByUser() {
         AppUser appUser = getCurrentAppUser();
+        System.out.println(appUser);
         return projectRepository.getProjectsByMembersContains(appUser);
     }
 
@@ -68,6 +69,8 @@ public class ProjectService {
         String gitRepository = project.getGitRepo();
         Optional<Project> optionalProject = projectRepository.findProjectByGitRepo(gitRepository);
         if (optionalProject.isEmpty()) {
+            AppUser appUser = getCurrentAppUser();
+            project.addNewUser(appUser);
             projectRepository.save(project);
         } else {
             UUID projectId = project.getId();

@@ -8,5 +8,6 @@ import java.util.UUID;
 
 public interface ProjectMessageRepository extends JpaRepository<ProjectMessage, UUID> {
 
-    List<ProjectMessage> findAllByProjectIdOrderByTimestamp(UUID projectId);
+    List<ProjectMessage> getAllByProjectIdOrderByTimestamp(UUID projectId);
+
 }
