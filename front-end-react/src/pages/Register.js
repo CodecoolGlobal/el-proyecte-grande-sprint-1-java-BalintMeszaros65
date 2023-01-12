@@ -55,12 +55,14 @@ export function Register(props) {
         await fetch(`/api/user/registration`, requestOptions)
             .then(response => {
                 if (response.ok) {
+                    console.log("response is ok")
                     return response;
                 } else {
                     console.log(response.errored);
                 }
             }).then(data => data.text())
             .then(data => {
+                console.log("i wanna set token")
                 props.setToken([{'token': data}])
                 localStorage.setItem('token', JSON.stringify(data));
                 navigate('/');

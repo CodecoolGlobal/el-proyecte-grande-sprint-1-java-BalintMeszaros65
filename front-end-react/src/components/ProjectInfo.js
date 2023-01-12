@@ -18,7 +18,15 @@ export function ProjectInfo(props) {
         <div className={'project_info_container'}>
             <div className={'project_dashboard'}>This is a dashboard</div>
             <div className={'right_side_container'}>
-                <div className={'project_members'}>Members</div>
+                <div className={'project_members'}>
+                    Members
+                    <div className={"member_container"}>
+
+                        {project.members.map( (member) =>(
+                            <p className={"project_member"} key={member["realUserName"]}>{member.realUserName}</p>
+                        ))}
+                    </div>
+                </div>
                 <div className={"project_github_link"}>
                     <button className={"github_button"} onClick={ visit_github_link}>Github Link</button>
                 </div>

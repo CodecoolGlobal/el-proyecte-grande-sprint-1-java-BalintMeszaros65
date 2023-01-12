@@ -22,6 +22,14 @@
     min-height: 100px;
     margin-top: 20px;
     margin-bottom: 20px;
+
+    font-weight: bold;
+
+}
+
+.project_member{
+    justify-content: center;
+    width: 100%;
 }
 
 
@@ -37,4 +45,9 @@
     float: right;
     margin-right: 10%;
     min-width: 20%;
+}
+
+.member-container {
+    display: flex;
+    justify-content: center;
 }

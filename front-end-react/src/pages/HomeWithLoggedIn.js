@@ -31,6 +31,7 @@ export function HomeWithLoggedIn() {
                     setHasProjects(true);
                     setProjects(data);
                     indexOfLastProject = data.length
+                    console.log(data)
                 } else {
                     setHasProjects(false);
                     setProjects(data);
