@@ -17,9 +17,11 @@ export function ProjectInfo(props) {
     return (
         <div className={'project_info_container'}>
             <div className={'project_dashboard'}>This is a dashboard</div>
-            <div className={'project_members'}>Members</div>
-            <div className={"project_github_link"}>
-                <button className={"github_button"} onClick={ visit_github_link}>Github Link</button>
+            <div className={'right_side_container'}>
+                <div className={'project_members'}>Members</div>
+                <div className={"project_github_link"}>
+                    <button className={"github_button"} onClick={ visit_github_link}>Github Link</button>
+                </div>
             </div>
         </div>
     )
