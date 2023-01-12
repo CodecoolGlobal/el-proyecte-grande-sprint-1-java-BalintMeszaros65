@@ -26,11 +26,10 @@ public class ProjectMessageController {
     }
 
     @CrossOrigin
-    @GetMapping("/api/messages/save/{project_id}/{user_id}")
+    @GetMapping("/api/messages/save/{project_id}")
     public void saveProjectMessage(@PathVariable(name = "project_id") UUID projectId,
-                                   @PathVariable(name = "user_id") UUID userId,
                                    @RequestBody ProjectMessage projectMessage) {
-        projectMessageService.saveProjectMessage(projectId, userId, projectMessage);
+        projectMessageService.saveProjectMessage(projectId, projectMessage);
     }
 
 }
