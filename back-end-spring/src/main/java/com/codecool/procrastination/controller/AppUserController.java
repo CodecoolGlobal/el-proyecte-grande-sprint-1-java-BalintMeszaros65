@@ -34,9 +34,9 @@ public class AppUserController {
     }
 
     // TODO validate user then give back token to frontend
-//    @GetMapping("/api/user/login")
-//    @ResponseBody
-//    public String loginUser(@RequestBody AppUser appUser) {
-//        return appUserService.loginUser(appUser);
-//    }
+    @PostMapping("/api/user/login")
+    @ResponseBody
+    public ResponseEntity<String> loginUser(@RequestBody AppUser appUser) {
+        return appUserService.loginUser(appUser);
+    }
 }
