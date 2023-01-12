@@ -10,7 +10,7 @@ export function HomeWithLoggedIn() {
     const [hasProjects, setHasProjects] = useState(false);
     const [projects, setProjects] = useState();
     let [hasClicked, setHasClicked] = useState(false);
-
+    let indexOfLastProject = 0
 
     useEffect(() => {
         console.log('useEffect Triggered')
@@ -29,13 +29,15 @@ export function HomeWithLoggedIn() {
             .then(data => {
                 if(data.length > 0){
                     setHasProjects(true);
+                    setProjects(data);
+                    indexOfLastProject = data.length
                 } else {
+                    setHasProjects(false);
                     setProjects(data);
                 }
-                console.log(data)
-                console.log('test ' + data.length)
             });
             // return hasProjects
+        console.log("teszt for project index =   " + projects)
 
     }, [hasClicked]);
 
@@ -45,7 +47,7 @@ export function HomeWithLoggedIn() {
 
 return (
         <div className={'home-container'}>
-            {(hasProjects) ? <ProjectInfo project={projects[0]} /> : <NewProjectForm setHasClicked={setHasClicked} />  }
+            {(hasProjects) ? <ProjectInfo project={projects[indexOfLastProject]} /> : <NewProjectForm setHasClicked={setHasClicked} />  }
         </div>
     )
 }
