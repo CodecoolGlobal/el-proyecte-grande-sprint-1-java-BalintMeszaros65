@@ -56,9 +56,9 @@ public class ProjectMessageService {
         }
     }
 
-    public void deleteAllProjectMessage (UUID projectId) {
-        List<ProjectMessage> projectMessages = projectMessageRepository.findAllByProjectIdOrderByTimestamp(projectId);
-        projectMessageRepository.deleteAll(projectMessages);
-
-    }
+//    public void deleteAllProjectMessage (UUID projectId) {
+//        List<ProjectMessage> projectMessages = projectMessageRepository.findAllByProjectIdOrderByTimestamp(projectId);
+//        projectMessageRepository.deleteAll(projectMessages);
+//
+//    }
 }
