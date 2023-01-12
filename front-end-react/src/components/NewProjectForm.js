@@ -1,8 +1,10 @@
 import React, {useState} from "react";
 import {getTokenForCurrentUser} from "./RouteGuard";
+import {useNavigate} from "react-router-dom";
 
 
-export function NewProjectForm() {
+export function NewProjectForm(props) {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState(
         {
             'teamName': '',
@@ -18,19 +20,16 @@ export function NewProjectForm() {
 
 
     async function fetchForCreateNewProject() {
-
+        const user_id = getTokenForCurrentUser();
         const requestOptionsForNewProjectFetch = {
             method: 'POST',
-            mode: 'cors',
             headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json',
+                'Authorization': `Bearer ${user_id}`,
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify(formData)
         }
-        // TODO get rid of localhost
-        const user_id = getTokenForCurrentUser();
-        await fetch(`http://localhost:8080/api/project/save/${user_id}`, requestOptionsForNewProjectFetch);
+        await fetch(`http://localhost:8080/api/project`, requestOptionsForNewProjectFetch);
 
 
     }
@@ -57,7 +56,11 @@ export function NewProjectForm() {
                        }}/>
                 {(isFormFilled()) && <button type={'submit'} onClick={async (e) => {
                     e.preventDefault()
-                    await fetchForCreateNewProject()
+                    await fetchForCreateNewProject().then(() => {
+                        props.setHasClicked(true);
+                        console.log('kattint a gombra')
+                        navigate('/')
+                    });
                 }}>
                     New Project
                 </button>}

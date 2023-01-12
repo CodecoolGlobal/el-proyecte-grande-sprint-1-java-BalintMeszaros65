@@ -2,41 +2,50 @@ import React, {useEffect, useState} from 'react';
 import './HomeWithLoggedIn.css';
 import {getTokenForCurrentUser} from "../components/RouteGuard";
 import {NewProjectForm} from "../components/NewProjectForm";
+import {ProjectInfo} from "../components/ProjectInfo";
 
 export function HomeWithLoggedIn() {
     //                <Logged In Version of Home>
 
-    const [noProjectYet, setNoProjectYet] = useState(false);
+    const [hasProjects, setHasProjects] = useState(false);
+    const [projects, setProjects] = useState();
+    let [hasClicked, setHasClicked] = useState(false);
+
 
     useEffect(() => {
-        const user_id = getTokenForCurrentUser();
+        console.log('useEffect Triggered')
+       const user_id = getTokenForCurrentUser();
         const requestOptions = {
-                method: 'GET',
-                mode: 'cors',
-                // TODO inject token to header
-                headers: {
-                    'Authorization': `Bearer ${user_id}`,
-                    'Content-Type': 'application/json'
-                }
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${user_id}`,
+                'Content-Type': 'application/json'
             }
-        // TODO get rid of localhost
+        }
         fetch(`/api/project`, requestOptions)
             .then(response => {
                 return response.json();
             })
             .then(data => {
-                if(data.length < 1){
-                    setNoProjectYet(true);
+                if(data.length > 0){
+                    setHasProjects(true);
+                } else {
+                    setProjects(data);
                 }
-                console.log(data);
+                console.log(data)
+                console.log('test ' + data.length)
             });
+            // return hasProjects
 
-    }, []);
+    }, [hasClicked]);
 
 
-    return (
+
+
+
+return (
         <div className={'home-container'}>
-            {(noProjectYet) && <NewProjectForm/>}
+            {(hasProjects) ? <ProjectInfo project={projects[0]} /> : <NewProjectForm setHasClicked={setHasClicked} />  }
         </div>
     )
 }
