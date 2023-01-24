@@ -1,6 +1,8 @@
 import React from 'react';
 import './ProjectInfo.css';
 import {useNavigate} from "react-router-dom";
+import {getTokenForCurrentUser} from "./RouteGuard";
+import {getValue} from "@testing-library/user-event/dist/utils";
 
 
 export function ProjectInfo(props) {
@@ -13,10 +15,46 @@ export function ProjectInfo(props) {
         window.open(project.gitRepo, "_blank");
     }
 
+    function sendNewProjectMessage(newProjectMessage){
+        console.log("function called")
+        console.log("value from inputField = " + newProjectMessage)
+        /*
+        const user_id = getTokenForCurrentUser();
+        const project_id = project.id;
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${user_id}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newProjectMessage)
+        }
+        fetch(`/api/messages/save/${project_id}"`, requestOptions)
+            .then(response => {
+                if (response.ok) {
+                    console.log("response is ok");
+                } else {
+                    console.log("response is NOT ok");
+                }
+            })
+            */
+
+    }
 
     return (
         <div className={'project_info_container'}>
-            <div className={'project_dashboard'}>This is a dashboard</div>
+            <div className={'project_dashboard'}>This is a dashboard
+                <div>here are the messages</div>
+                <div>
+                    <input type="text" placeholder={"type something"}
+                           onKeyDown={(event) => {
+                               if (event.key === 'Enter'){
+                                   sendNewProjectMessage(event.currentTarget.value);
+                               }
+                           }}
+                           />
+                </div>
+            </div>
             <div className={'right_side_container'}>
                 <div className={'project_members'}>
                     Members
