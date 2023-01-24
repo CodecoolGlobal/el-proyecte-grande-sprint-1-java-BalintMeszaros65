@@ -8,9 +8,22 @@
     float: left;
     width: 45%;
     margin-left: 10%;
-    height: 400px;
-
+    min-height: 400px;
+    position: relative;
 }
+
+.project_dashboard input{
+    bottom: 10px;
+    position: absolute;
+    left: 20px;
+    width: 93%;
+}
+
+
+
+
+
+
 
 .project_members {
     box-shadow: 1px 4px 5px 0px rgba(0,0,0,0.09);
