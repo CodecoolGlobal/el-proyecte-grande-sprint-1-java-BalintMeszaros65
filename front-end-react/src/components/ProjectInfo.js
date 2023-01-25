@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import './ProjectInfo.css';
 import {useNavigate} from "react-router-dom";
 import {getTokenForCurrentUser} from "./RouteGuard";
@@ -9,15 +9,40 @@ export function ProjectInfo(props) {
 
     const project = props.project;
 
+    const [projectMessages, setProjectMessages] = useState([]);
+
 
     function visit_github_link(){
         window.open(project.gitRepo, "_blank");
     }
 
-    async function sendNewProjectMessage(newProjectMessage) {
-        const message = {"message": newProjectMessage};
+    async function getProjectMessages(){
         const user_id = getTokenForCurrentUser();
         const project_id = project.id;
+        const requestOptions = {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${user_id}`,
+                'Content-Type': 'application/json'
+            }
+        }
+        await fetch(`/api/messages/load/${project_id}`, requestOptions)
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                }
+            })
+            .then(data => {
+                if(data.length > 0){
+                    setProjectMessages(data);
+                }
+            })
+    }
+
+    async function sendNewProjectMessage(newProjectMessage) {
+        const user_id = getTokenForCurrentUser();
+        const project_id = project.id;
+        const message = {"message": newProjectMessage};
         const requestOptions = {
             method: 'POST',
             headers: {
@@ -26,25 +51,37 @@ export function ProjectInfo(props) {
             },
             body: JSON.stringify(message)
         }
-        await fetch(`http://localhost:8080/api/messages/save/${project_id}`, requestOptions)
+        await fetch(`/api/messages/save/${project_id}`, requestOptions)
             .then(response => {
                 if (response.ok) {
-                    console.log("response is ok");
+                    getProjectMessages();
                 } else {
-                    console.log("response is NOT ok");
                 }
             })
     }
 
+    useEffect(() => {
+        getProjectMessages();
+    },[]);
+
     return (
         <div className={'project_info_container'}>
-            <div className={'project_dashboard'}>This is a dashboard
-                <div>here are the messages</div>
+            <div className={'project_dashboard'}>
+                <div>
+                    {projectMessages.length > 0 && (
+                        <div>
+                            {projectMessages.map(message => (
+                                <p key={message}>{message}</p>
+                            ))}
+                        </div>
+                    )}
+                </div>
                 <div>
                     <input type="text" placeholder={"type something"}
                            onKeyDown={(event) => {
-                               if (event.key === 'Enter'){
+                               if (event.key === 'Enter'&& event.currentTarget.value.length > 0){
                                    sendNewProjectMessage(event.currentTarget.value);
+                                   event.currentTarget.value = "";
                                }
                            }}
                            />
