@@ -7,29 +7,26 @@ import {getValue} from "@testing-library/user-event/dist/utils";
 
 export function ProjectInfo(props) {
 
-
-
     const project = props.project;
+
 
     function visit_github_link(){
         window.open(project.gitRepo, "_blank");
     }
 
-    function sendNewProjectMessage(newProjectMessage){
-        console.log("function called")
-        console.log("value from inputField = " + newProjectMessage)
-        /*
+    async function sendNewProjectMessage(newProjectMessage) {
+        const message = {"message": newProjectMessage};
         const user_id = getTokenForCurrentUser();
         const project_id = project.id;
         const requestOptions = {
-            method: 'GET',
+            method: 'POST',
             headers: {
                 'Authorization': `Bearer ${user_id}`,
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(newProjectMessage)
+            body: JSON.stringify(message)
         }
-        fetch(`/api/messages/save/${project_id}"`, requestOptions)
+        await fetch(`http://localhost:8080/api/messages/save/${project_id}`, requestOptions)
             .then(response => {
                 if (response.ok) {
                     console.log("response is ok");
@@ -37,8 +34,6 @@ export function ProjectInfo(props) {
                     console.log("response is NOT ok");
                 }
             })
-            */
-
     }
 
     return (
