@@ -26,7 +26,7 @@ public class ProjectMessageController {
     }
 
     @CrossOrigin
-    @GetMapping("/api/messages/save/{project_id}")
+    @PostMapping("/api/messages/save/{project_id}")
     public void saveProjectMessage(@PathVariable(name = "project_id") UUID projectId,
                                    @RequestBody ProjectMessage projectMessage) {
         projectMessageService.saveProjectMessage(projectId, projectMessage);

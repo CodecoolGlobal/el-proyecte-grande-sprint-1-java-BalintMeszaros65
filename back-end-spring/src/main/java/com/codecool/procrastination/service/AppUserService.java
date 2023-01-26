@@ -73,22 +73,20 @@ public class AppUserService {
         return ResponseEntity.status(HttpStatus.CREATED).body(token);
     }
 
-    // TODO delete after auth?
-//    public String loginUser(AppUser appUser) {
-//        Optional<AppUser> optionalAppUser = appUserRepository.getUserByEmail(appUser.getEmail());
-//        if (optionalAppUser.isPresent()) {
-//            AppUser savedAppUser = optionalAppUser.get();
-//            // TODO hashed passwords
-//            if (savedAppUser.getPassword().equals(appUser.getPassword())) {
-//                // TODO hashed token
-//                return savedAppUser.getId().toString();
-//            } else {
-//                throw new CustomExceptions.WrongEmailOrPasswordException("Unable to login.\n");
-//            }
-//        } else {
-//            throw new CustomExceptions.WrongEmailOrPasswordException("Unable to login.\n");
-//        }
-//    }
+    public ResponseEntity<String> loginUser(AppUser appUser) {
+        Optional<AppUser> optionalAppUser = appUserRepository.findAppUserByEmail(appUser.getEmail());
+        if (optionalAppUser.isPresent()) {
+            AppUser savedAppUser = optionalAppUser.get();
+            if (passwordEncoder.matches(appUser.getPassword(), savedAppUser.getPassword())) {
+                String token = jwtUtil.createToken(new HashMap<>(), appUser.getUsername());
+                return ResponseEntity.status(HttpStatus.OK).body(token);
+            } else {
+                throw new CustomExceptions.MissingAttributeException("Unable to login");
+            }
+        } else {
+            throw new CustomExceptions.MissingAttributeException("Unable to login");
+        }
+    }
 
     @Bean
     public UserDetailsService userDetailsService() {

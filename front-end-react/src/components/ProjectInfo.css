@@ -1,0 +1,79 @@
+.project_dashboard {
+    box-shadow: 1px 4px 5px 0px rgba(0,0,0,0.09);
+    -webkit-box-shadow: 1px 4px 5px 0px rgba(0,0,0,0.09);
+    -moz-box-shadow: 1px 4px 5px 0px rgba(0,0,0,0.09);
+    background-color: white;
+
+    padding-top: 20px;
+    float: left;
+    width: 45%;
+    height: 310px;
+
+    margin-left: 10%;
+    min-height: 400px;
+    position: relative;
+}
+
+.project_dashboard input{
+    bottom: 10px;
+    position: absolute;
+    left: 20px;
+    width: 93%;
+}
+
+p {
+    margin: 10px;
+    line-break: anywhere;
+}
+.messages_container {
+    margin-bottom: 80px;
+    height: inherit;
+    overflow: auto;
+}
+
+
+
+
+
+
+
+.project_members {
+    box-shadow: 1px 4px 5px 0px rgba(0,0,0,0.09);
+    -webkit-box-shadow: 1px 4px 5px 0px rgba(0,0,0,0.09);
+    -moz-box-shadow: 1px 4px 5px 0px rgba(0,0,0,0.09);
+    background-color: white;
+
+    padding-top: 20px;
+    min-height: 100px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    font-weight: bold;
+
+}
+
+.project_member{
+    justify-content: center;
+    width: 100%;
+}
+
+
+.project_github_link {
+    padding-top: 20px;
+    box-shadow: 1px 4px 5px 0px rgba(0,0,0,0.09);
+    -webkit-box-shadow: 1px 4px 5px 0px rgba(0,0,0,0.09);
+    -moz-box-shadow: 1px 4px 5px 0px rgba(0,0,0,0.09);
+    background-color: white;
+}
+
+.right_side_container {
+    float: right;
+    margin-right: 10%;
+    min-width: 20%;
+}
+
+.member-container {
+    display: flex;
+    justify-content: center;
+}
+

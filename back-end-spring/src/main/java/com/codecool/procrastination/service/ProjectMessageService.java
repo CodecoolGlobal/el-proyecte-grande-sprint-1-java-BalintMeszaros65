@@ -12,7 +12,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import javax.swing.text.html.Option;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -53,4 +55,10 @@ public class ProjectMessageService {
             projectMessageRepository.save(projectMessage);
         }
     }
+
+//    public void deleteAllProjectMessage (UUID projectId) {
+//        List<ProjectMessage> projectMessages = projectMessageRepository.findAllByProjectIdOrderByTimestamp(projectId);
+//        projectMessageRepository.deleteAll(projectMessages);
+//
+//    }
 }

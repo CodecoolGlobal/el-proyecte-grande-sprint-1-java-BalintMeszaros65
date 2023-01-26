@@ -53,8 +53,9 @@ public class SecurityConfig {
                 .addFilterBefore(jwtTokenFilter, UsernamePasswordAuthenticationFilter.class)
                 // TODO use React endpoint for login
                 .formLogin()
-                .and()
-                .logout();
+                .disable()
+                .logout()
+                .disable();
         return http.build();
     }
 

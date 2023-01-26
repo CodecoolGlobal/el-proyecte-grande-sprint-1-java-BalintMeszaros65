@@ -1,19 +1,17 @@
 package com.codecool.procrastination.controller;
 
 import com.codecool.procrastination.model.Project;
-import com.codecool.procrastination.model.AppUser;
 import com.codecool.procrastination.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 
 @RestController
-@RequestMapping("api/project")
+@RequestMapping("/api/project")
 public class ProjectController {
-    // TODO get all Projects by AppUser id
-
     private final ProjectService projectService;
 
     @Autowired
@@ -22,19 +20,32 @@ public class ProjectController {
     }
 
     @CrossOrigin
-    @PostMapping()
-    public void saveProject(@RequestBody Project project) {projectService.saveProject(project);}
-
-    // TODO not needed, see ProjectService
-    @PostMapping("/new_member/{id}")
-    public void addNewMember(@PathVariable UUID id, @RequestBody AppUser appUser) {projectService.addNewMember(id, appUser);}
-
-    // TODO PUT method, it is changing status not creating
-    @CrossOrigin
-    @PostMapping("/change_status/{id}")
-    public void changeProjectStatus(@PathVariable UUID id) {projectService.changeProjectStatus(id);}
+    @GetMapping
+    public List<Project> getUserProjects() {
+        return projectService.getAllProjectsByUser();
+    }
 
     @CrossOrigin
-    @GetMapping("/{id}")
-    public Project getProjectById (@PathVariable UUID id) {return projectService.getProjectById(id);}
+    @GetMapping("/{projectId}")
+    public Project getProject(@PathVariable UUID projectId) {
+        return projectService.getProjectById(projectId);
+    }
+
+    @CrossOrigin
+    @GetMapping("/leave/{projectId}")
+    public void leaveProject(@PathVariable UUID projectId) {
+        projectService.leaveProject(projectId);
+    }
+
+    @CrossOrigin
+    @PostMapping
+    public void addOrJoinProject(@RequestBody Project project) {
+        projectService.addNewProject(project);
+    }
+
+    @CrossOrigin
+    @PutMapping
+    public void updateProject(@RequestBody Project project) {
+        projectService.updateProject(project);
+    }
 }

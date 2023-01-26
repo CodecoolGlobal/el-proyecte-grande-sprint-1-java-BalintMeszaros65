@@ -33,10 +33,10 @@ public class AppUserController {
         return !appUserService.IsEmailPresent(email);
     }
 
-    // TODO delete after auth?
-//    @GetMapping("/api/user/login")
-//    @ResponseBody
-//    public String loginUser(@RequestBody AppUser appUser) {
-//        return appUserService.loginUser(appUser);
-//    }
+    // TODO validate user then give back token to frontend
+    @PostMapping("/api/user/login")
+    @ResponseBody
+    public ResponseEntity<String> loginUser(@RequestBody AppUser appUser) {
+        return appUserService.loginUser(appUser);
+    }
 }

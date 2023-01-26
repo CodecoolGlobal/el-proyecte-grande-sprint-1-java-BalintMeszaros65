@@ -1,16 +1,23 @@
 import React from 'react';
 import './Home.css';
-import {Link} from 'react-router-dom';
+import {useNavigate} from "react-router-dom";
 
+//                <Unregistered Version of Home>
 export function Home() {
-    //                <Unregistered Version of Home>
+
+    let navigate = useNavigate();
+
+    function routeChange(path) {
+        navigate(path)
+    }
+
     return (
         <div className={'home-container'}>
             <div className={'btn-container'}>
-                <a className={'btn home-navigation-link'} href={'/login'}> Login </a>
+                <button color={'primary'}  onClick={() => routeChange(`/login`)}>Login</button>
             </div>
             <div className={'btn-container'}>
-                <a className={'btn home-navigation-link'} href={'/register'}> Register </a>
+                <button color={'primary'} onClick={() => routeChange(`/register`)}>Register</button>
             </div>
         </div>
 

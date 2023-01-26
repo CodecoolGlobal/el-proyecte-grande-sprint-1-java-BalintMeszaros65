@@ -1,47 +1,97 @@
 package com.codecool.procrastination.service;
 
+import com.codecool.procrastination.exceptions.CustomExceptions;
 import com.codecool.procrastination.model.AppUser;
 import com.codecool.procrastination.model.Project;
 import com.codecool.procrastination.repositories.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
 public class ProjectService {
-    // TODO get all Projects by AppUser id
-    // TODO saveProject: check if it already exists and if it is then add member (get id from controller) and save it to DB
-    // TODO add checks if the incoming data from frontend is complete, if not throw errors (merge dev, it has custom exceptions, and exception handling controller)
-    // TODO dto layer at the end, low priority
-
     private final ProjectRepository projectRepository;
 
+    private final AppUserService appUserService;
+
     @Autowired
-    public ProjectService(ProjectRepository projectRepository) {
+    public ProjectService(ProjectRepository projectRepository, AppUserService appUserService) {
         this.projectRepository = projectRepository;
+        this.appUserService = appUserService;
     }
 
-    public void saveProject (Project project) {projectRepository.save(project);}
-
-    public Project getProjectById (UUID id) {
-        Optional<Project> project = projectRepository.findById(id);
-        return project.orElse(null);
+    public Project getProjectById(UUID projectId) {
+        Optional<Project> project = projectRepository.findById(projectId);
+        if (project.isPresent()) {
+            return project.get();
+        } else {
+            throw new CustomExceptions.MissingAttributeException("This project doesn't exist");
+        }
     }
 
+    public List<Project> getAllProjectsByUser() {
+        AppUser appUser = getCurrentAppUser();
+        System.out.println(appUser);
+        return projectRepository.getProjectsByMembersContains(appUser);
+    }
 
-    // TODO not needed, see above
-    public void addNewMember (UUID id, AppUser appUser) {
-        Project project = getProjectById(id);
-        project.addNewMember(appUser);
+    private AppUser getCurrentAppUser() {
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        return appUserService.getUserByEmail(email);
+    }
+
+    private boolean userHasAccess(Project project) {
+        if (project.isUserAMember(getCurrentAppUser())) {
+            return true;
+        } else {
+            throw new CustomExceptions.MissingAttributeException("This user has no rights");
+        }
+    }
+
+    public void leaveProject(UUID projectId) {
+        AppUser appUser = getCurrentAppUser();
+        Project project = getProjectById(projectId);
+        if (userHasAccess(project)) {
+            project.removeUser(appUser);
+            if (project.isProjectAbandoned()) {
+                projectRepository.delete(project);
+            } else {
+                projectRepository.save(project);
+            }
+        }
+    }
+
+    public void addNewProject(Project project) {
+        String gitRepository = project.getGitRepo();
+        Optional<Project> optionalProject = projectRepository.findProjectByGitRepo(gitRepository);
+        if (optionalProject.isEmpty()) {
+            AppUser appUser = getCurrentAppUser();
+            project.addNewUser(appUser);
+            projectRepository.save(project);
+        } else {
+            project = optionalProject.get();
+            UUID projectId = project.getId();
+            joinProject(projectId);
+        }
+    }
+
+    private void joinProject(UUID projectId) {
+        Project project = getProjectById(projectId);
+        AppUser appUser = getCurrentAppUser();
+        project.addNewUser(appUser);
         projectRepository.save(project);
     }
 
-    public void changeProjectStatus(UUID id) {
-        Project project = getProjectById(id);
-        project.changeStatus();
-        projectRepository.save(project);
+    public void updateProject(Project project) {
+        UUID projectId = project.getId();
+        if (userHasAccess(project) && projectRepository.existsById(projectId)) {
+            projectRepository.save(project);
+        } else {
+            throw new CustomExceptions.MissingAttributeException("This user doesn't have access to this project");
+        }
     }
 }

@@ -3,7 +3,7 @@ import './Register.css';
 import {useNavigate} from "react-router-dom";
 
 
-export function Register() {
+export function Register(props) {
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState(
@@ -36,13 +36,12 @@ export function Register() {
     async function fetchForCheckEmail() {
         const requestOptions = {
             method: 'GET',
-            mode: 'cors',
             headers: {'Content-Type': 'application/json',}
 
         };
 
         //      ASYNC FETCH
-        const response = await fetch(`http://localhost:8080/api/user/registration/check-email/${formData['email']}`,
+        const response = await fetch(`/api/user/registration/check-email/${formData['email']}`,
             requestOptions);
         return await response.json();
     }
@@ -50,12 +49,25 @@ export function Register() {
     async function sendRegisterForm() {
         const requestOptions = {
             method: 'POST',
-            mode: 'cors',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify(formData)
         };
+        await fetch(`/api/user/registration`, requestOptions)
+            .then(response => {
+                if (response.ok) {
+                    console.log("response is ok")
+                    return response;
+                } else {
+                    console.log(response.errored);
+                }
+            }).then(data => data.text())
+            .then(data => {
+                console.log("i wanna set token")
+                props.setToken([{'token': data}])
+                localStorage.setItem('token', JSON.stringify(data));
+                navigate('/');
 
-        await fetch(`http://localhost:8080/api/user/registration/`, requestOptions)
+            })
     }
 
     function rejectRegister() {
@@ -63,7 +75,7 @@ export function Register() {
         formData['email'] = '';
         setBadRegister(true);
     }
-
+    // TODO input onChange lambda replace to useEffect
     return (
         <div className={'reg-form-container'}>
             <form>

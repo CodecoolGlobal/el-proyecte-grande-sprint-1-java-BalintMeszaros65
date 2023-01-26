@@ -1,13 +1,66 @@
 .navbar-container {
-    background-color: greenyellow;
+    background-color: white;
     width: 100%;
     height: 50px;
+    box-shadow: 1px 4px 5px 0px rgba(0,0,0,0.09);
+    -webkit-box-shadow: 1px 4px 5px 0px rgba(0,0,0,0.09);
+    -moz-box-shadow: 1px 4px 5px 0px rgba(0,0,0,0.09);
 }
 
 .logo-container {
-    background-color: blueviolet;
     width: 200px;
     height: 50px;
     float: right;
     text-align: center;
+}
+
+.menu-container {
+    width: 100px;
+    height: 16px;
+    border-radius: 14px;
+    float: right;
+    text-align: center;
+    position: relative;
+    padding: 10px;
+    margin-top: 4px;
+}
+
+.menu-container:hover {
+    width: 100px;
+    height: 16px;
+    border-radius: 14px;
+    float: right;
+    text-align: center;
+    position: relative;
+    padding: 10px;
+    background-color: #ededed;
+    margin-top: 4px;
+}
+.menu-container a {
+    text-decoration: none;
+    color: black;
+}
+.menu-container a:hover {
+    text-decoration: none;
+    color: black;
+
+}
+.container {
+    height: 100%;
+}
+.new-project-container {
+    width: 200px;
+    height: 22px;
+    padding: 14px 20px;
+    /* border: 1px solid gray; */
+    background-color: #ededed;
+}
+.new-project-container a {
+    text-decoration: none;
+    color: black;
+}
+.logo-text {
+    margin-top: 14px;
+    font-size: 16px;
+    font-weight: bold;
 }
