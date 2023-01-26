@@ -1,5 +1,6 @@
 package com.codecool.procrastination.service;
 
+import com.codecool.procrastination.dto.AppUserDto;
 import com.codecool.procrastination.exceptions.CustomExceptions;
 import com.codecool.procrastination.model.AppUser;
 import com.codecool.procrastination.repositories.AppUserRepository;
@@ -9,6 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -91,5 +93,19 @@ public class AppUserService {
     @Bean
     public UserDetailsService userDetailsService() {
         return this::getUserByEmail;
+    }
+
+    public boolean userExists() {
+        String email = getEmailFromToken();
+        return IsEmailPresent(email);
+    }
+
+    public AppUserDto getUserDetails() {
+        String email = getEmailFromToken();
+        return new AppUserDto(getUserByEmail(email));
+    }
+
+    public String getEmailFromToken() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
     }
 }
