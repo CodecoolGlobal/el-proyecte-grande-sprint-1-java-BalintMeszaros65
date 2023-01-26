@@ -4,12 +4,10 @@ import {getTokenForCurrentUser} from "../components/RouteGuard";
 import {NewProjectForm} from "../components/NewProjectForm";
 import {ProjectInfo} from "../components/ProjectInfo";
 
-export function HomeWithLoggedIn() {
+export function HomeWithLoggedIn(props) {
     //                <Logged In Version of Home>
 
-    const [hasProjects, setHasProjects] = useState(false);
-    const [projects, setProjects] = useState();
-    let [hasClicked, setHasClicked] = useState(false);
+
     let indexOfLastProject = 0
 
     useEffect(() => {
@@ -28,24 +26,37 @@ export function HomeWithLoggedIn() {
             })
             .then(data => {
                 if(data.length > 0){
-                    setHasProjects(true);
-                    setProjects(data);
-                    indexOfLastProject = data.length
-                    console.log(data)
+                    props.setHasProjects(true);
+                    props.setProjects(data);
+                    indexOfLastProject = data.length;
+                    localStorage.setItem('projects', JSON.stringify(parseObject(data)));
+                    console.log(data.length)
                 } else {
-                    setHasProjects(false);
-                    setProjects(data);
+                    props.setHasProjects(false);
+                    props.setProjects(data);
                 }
             });
-    }, [hasClicked]);
+    }, [props.hasClicked]);
 
+    function parseObject(data) {
+        let map = {};
+        for(let i=0; i<data.length; i++) {
+            map[i] = data[i];
+        }
+        return map;
+    }
 
+    function lastProjectIndex() {
+        let result = 0;
+        let projects = JSON.parse(localStorage.getItem('projects'));
 
+        return Object.keys(projects).length-1;
+    }
 
 
 return (
         <div className={'home-container'}>
-            {(hasProjects) ? <ProjectInfo project={projects[indexOfLastProject]} /> : <NewProjectForm setHasClicked={setHasClicked} />  }
+            {(props.hasProjects) ? <ProjectInfo id={lastProjectIndex()} /> : <NewProjectForm setHasClicked={props.setHasClicked} />  }
         </div>
     )
 }

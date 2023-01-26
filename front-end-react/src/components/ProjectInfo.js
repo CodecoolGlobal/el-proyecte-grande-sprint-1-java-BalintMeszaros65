@@ -1,24 +1,39 @@
 import React, {useEffect, useState} from 'react';
 import './ProjectInfo.css';
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {getTokenForCurrentUser} from "./RouteGuard";
 import {getValue} from "@testing-library/user-event/dist/utils";
 
 
 export function ProjectInfo(props) {
 
-    const project = props.project;
+    const projectId = props.id;
+    //console.log(projectId)
+
+    let projects = JSON.parse(localStorage.getItem('projects'));
+    const { id } = useParams();
+    let thisProject = {};
+
+    if (id === undefined) {
+        thisProject = projects[projectId];
+
+    } else {
+        thisProject = projects[id];
+    }
+    console.log(thisProject);
+
+
 
     const [projectMessages, setProjectMessages] = useState([]);
 
 
     function visit_github_link() {
-        window.open(project.gitRepo, "_blank");
+        window.open(thisProject.gitRepo, "_blank");
     }
 
     async function getProjectMessages() {
         const user_id = getTokenForCurrentUser();
-        const project_id = project.id;
+        const project_id = thisProject.id;
         const requestOptions = {
             method: 'GET',
             headers: {
@@ -41,7 +56,7 @@ export function ProjectInfo(props) {
 
     async function sendNewProjectMessage(newProjectMessage) {
         const user_id = getTokenForCurrentUser();
-        const project_id = project.id;
+        const project_id = thisProject.id;
         const message = {"message": newProjectMessage};
         const requestOptions = {
             method: 'POST',
@@ -66,6 +81,7 @@ export function ProjectInfo(props) {
     return (
         <div className={'project_info_container'}>
             <div className={'project_dashboard'}>
+                <h3>Messages</h3>
                 <div className={'messages_container'} ref={() => {
                     let element = document.querySelector(".messages_container");
                     element.scrollTop = element.scrollHeight;
@@ -95,10 +111,10 @@ export function ProjectInfo(props) {
             </div>
             <div className={'right_side_container'}>
                 <div className={'project_members'}>
-                    Members
+                    <h3>Members</h3>
                     <div className={"member_container"}>
 
-                        {project.members.map((member) => (
+                        {thisProject.members.map((member) => (
                             <p className={"project_member"} key={member["realUserName"]}>{member.realUserName}</p>
                         ))}
                     </div>

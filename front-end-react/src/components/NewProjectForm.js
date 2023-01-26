@@ -1,6 +1,7 @@
 import React, {useState} from "react";
 import {getTokenForCurrentUser} from "./RouteGuard";
 import {useNavigate} from "react-router-dom";
+import './NewProjectForm.css';
 
 
 export function NewProjectForm(props) {

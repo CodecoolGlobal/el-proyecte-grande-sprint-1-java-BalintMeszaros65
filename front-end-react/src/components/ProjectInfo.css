@@ -20,6 +20,9 @@
     left: 20px;
     width: 93%;
 }
+.project_dashboard h3 {
+    text-align: center;
+}
 
 p {
     margin: 10px;
@@ -33,7 +36,9 @@ p {
 
 
 
-
+.project_info_container {
+    margin-top: 50px;
+}
 
 
 
@@ -51,6 +56,9 @@ p {
     font-weight: bold;
 
 }
+.project_members h3 {
+    text-align: center;
+}
 
 .project_member{
     justify-content: center;
@@ -64,6 +72,7 @@ p {
     -webkit-box-shadow: 1px 4px 5px 0px rgba(0,0,0,0.09);
     -moz-box-shadow: 1px 4px 5px 0px rgba(0,0,0,0.09);
     background-color: white;
+    text-align: center;
 }
 
 .right_side_container {

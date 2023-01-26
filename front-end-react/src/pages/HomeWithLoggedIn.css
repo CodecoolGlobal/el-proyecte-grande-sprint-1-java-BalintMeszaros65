@@ -1,12 +1,11 @@
 .home-container {
     text-align: center;
-    margin: 100px auto;
+    margin: 0 auto;
     height: 200px;
 }
 .project-form-container {
     display: flex;
     background-color: white;
-
     top: 10%;
     width: 300px;
     bottom: 12%;
