@@ -12,11 +12,11 @@ export function ProjectInfo(props) {
     const [projectMessages, setProjectMessages] = useState([]);
 
 
-    function visit_github_link(){
+    function visit_github_link() {
         window.open(project.gitRepo, "_blank");
     }
 
-    async function getProjectMessages(){
+    async function getProjectMessages() {
         const user_id = getTokenForCurrentUser();
         const project_id = project.id;
         const requestOptions = {
@@ -33,7 +33,7 @@ export function ProjectInfo(props) {
                 }
             })
             .then(data => {
-                if(data.length > 0){
+                if (data.length > 0) {
                     setProjectMessages(data);
                 }
             })
@@ -55,36 +55,42 @@ export function ProjectInfo(props) {
             .then(response => {
                 if (response.ok) {
                     getProjectMessages();
-                } else {
                 }
             })
     }
 
     useEffect(() => {
         getProjectMessages();
-    },[]);
+    }, []);
 
     return (
         <div className={'project_info_container'}>
             <div className={'project_dashboard'}>
-                <div>
+                <div className={'messages_container'} ref={() => {
+                    let element = document.querySelector(".messages_container");
+                    element.scrollTop = element.scrollHeight;
+                }}>
                     {projectMessages.length > 0 && (
                         <div>
                             {projectMessages.map(message => (
-                                <p key={message}>{message}</p>
-                            ))}
+                                    <p key={message}>{message}</p>
+                                )
+                            )}
                         </div>
                     )}
                 </div>
                 <div>
                     <input type="text" placeholder={"type something"}
                            onKeyDown={(event) => {
-                               if (event.key === 'Enter'&& event.currentTarget.value.length > 0){
-                                   sendNewProjectMessage(event.currentTarget.value);
+                               if (event.key === 'Enter') {
+                                   if (event.currentTarget.value.trim().length > 0) {
+                                       sendNewProjectMessage(event.currentTarget.value)
+
+                                   }
                                    event.currentTarget.value = "";
                                }
                            }}
-                           />
+                    />
                 </div>
             </div>
             <div className={'right_side_container'}>
@@ -92,13 +98,13 @@ export function ProjectInfo(props) {
                     Members
                     <div className={"member_container"}>
 
-                        {project.members.map( (member) =>(
+                        {project.members.map((member) => (
                             <p className={"project_member"} key={member["realUserName"]}>{member.realUserName}</p>
                         ))}
                     </div>
                 </div>
                 <div className={"project_github_link"}>
-                    <button className={"github_button"} onClick={ visit_github_link}>Github Link</button>
+                    <button className={"github_button"} onClick={visit_github_link}>Github Link</button>
                 </div>
             </div>
         </div>

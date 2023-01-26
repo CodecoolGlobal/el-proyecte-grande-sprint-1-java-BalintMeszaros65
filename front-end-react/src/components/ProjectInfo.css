@@ -7,6 +7,8 @@
     padding-top: 20px;
     float: left;
     width: 45%;
+    height: 310px;
+
     margin-left: 10%;
     min-height: 400px;
     position: relative;
@@ -17,6 +19,16 @@
     position: absolute;
     left: 20px;
     width: 93%;
+}
+
+p {
+    margin: 10px;
+    line-break: anywhere;
+}
+.messages_container {
+    margin-bottom: 80px;
+    height: inherit;
+    overflow: auto;
 }
 
 
@@ -65,7 +77,3 @@
     justify-content: center;
 }
 
- p {
-     margin: 10px;
-    line-break: anywhere;
-}
