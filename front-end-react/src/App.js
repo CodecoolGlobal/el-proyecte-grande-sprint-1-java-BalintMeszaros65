@@ -7,8 +7,9 @@ import {Navbar} from "./components/Navbar";
 import {HomeWithLoggedIn} from "./pages/HomeWithLoggedIn";
 import {PageNotFound} from "./pages/PageNotFound";
 import './components/FontawsomeIcons';
-import { hasJWT } from "./components/RouteGuard";
+import {hasJWT} from "./components/RouteGuard";
 import {useState} from "react";
+import {Profile} from "./pages/Profile";
 
 
 function App() {
@@ -16,20 +17,21 @@ function App() {
 
     return (
         <>
-            <Navbar setToken={setToken} />
+            <Navbar setToken={setToken}/>
             <Router>
                 {hasJWT() ?
-                <Routes>
-                    <Route path={"/"} element={<HomeWithLoggedIn/>} />
-                    <Route path={"*"} element={<PageNotFound />} />
-                </Routes>
-                :
-                <Routes>
-                    <Route path={"/"} element={<Home/>} />
-                    <Route path={"/login"} element={<Login setToken={setToken} />}/>
-                    <Route path={"/register"} element={<Register setToken={setToken}/>}/>
-                    <Route path={"*"} element={<PageNotFound />} />
-                </Routes>
+                    <Routes>
+                        <Route path={"/"} element={<HomeWithLoggedIn/>}/>
+                        <Route path={"*"} element={<PageNotFound/>}/>
+                        <Route path={"/profile"} element={<Profile/>}/>
+                    </Routes>
+                    :
+                    <Routes>
+                        <Route path={"/"} element={<Home/>}/>
+                        <Route path={"/login"} element={<Login setToken={setToken}/>}/>
+                        <Route path={"/register"} element={<Register setToken={setToken}/>}/>
+                        <Route path={"*"} element={<PageNotFound/>}/>
+                    </Routes>
                 }
             </Router>
         </>
