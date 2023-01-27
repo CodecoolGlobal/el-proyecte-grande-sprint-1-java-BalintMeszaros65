@@ -17,6 +17,7 @@ export function ProjectInfo(props) {
     }
 
     async function getProjectMessages() {
+        console.log("get project messages called")
         const user_id = getTokenForCurrentUser();
         const project_id = project.id;
         const requestOptions = {
