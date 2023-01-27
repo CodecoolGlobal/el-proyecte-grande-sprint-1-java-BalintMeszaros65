@@ -2,12 +2,15 @@ import React, {useEffect, useRef, useState} from 'react';
 import './Navbar.css';
 import {FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { hasJWT } from "./RouteGuard";
-import {Link, useNavigate} from "react-router-dom";
 
 
 export function Navbar(props){
     const [isOpenDropDown, setIsOpenDropDown] = useState(false);
-    let projects = JSON.parse(localStorage.getItem('projects'));
+
+
+    let projects = {};
+
+    (localStorage.getItem('projects')) ? projects = JSON.parse(localStorage.getItem('projects')) : projects = {};
 
     let menuRef = useRef();
 
@@ -27,6 +30,7 @@ export function Navbar(props){
     });
     function logout() {
         localStorage.setItem("token", "");
+        localStorage.setItem("projects", "");
         props.setToken("token", "");
     }
 
