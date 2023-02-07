@@ -1,9 +1,11 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import './Register.css';
 import {useNavigate} from "react-router-dom";
+import {currentToken} from "../App";
 
 
-export function Register(props) {
+export function Register() {
+    const {token, setToken} = useContext(currentToken);
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState(
@@ -63,10 +65,8 @@ export function Register(props) {
             }).then(data => data.text())
             .then(data => {
                 console.log("i wanna set token")
-                props.setToken([{'token': data}])
-                localStorage.setItem('token', JSON.stringify(data));
+                setToken(data);
                 navigate('/');
-
             })
     }
 
@@ -75,6 +75,7 @@ export function Register(props) {
         formData['email'] = '';
         setBadRegister(true);
     }
+
     // TODO input onChange lambda replace to useEffect
     return (
         <div className={'reg-form-container'}>

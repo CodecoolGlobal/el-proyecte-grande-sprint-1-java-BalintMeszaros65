@@ -1,11 +1,11 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import './Login.css';
 import {useNavigate} from "react-router-dom";
-import {getTokenForCurrentUser} from "../components/RouteGuard";
+import {currentToken} from "../App";
 
-export function Login(props) {
+export function Login() {
 
-
+    const {token, setToken} = useContext(currentToken);
     const navigate = useNavigate();
 
 
@@ -18,11 +18,10 @@ export function Login(props) {
     const [badLogin, setBadLogin] = useState(false);
 
 
-
     function isFormFilled() {
         return formData['email'].length > 2
-                && formData['password'].length > 2
-                && validateEmail();
+            && formData['password'].length > 2
+            && validateEmail();
     }
 
     async function fetchForLogin() {
@@ -46,10 +45,8 @@ export function Login(props) {
                 }
             }).then(data => data.text())
             .then(data => {
-                props.setToken([{'token': data}])
-                localStorage.setItem('token', JSON.stringify(data));
+                setToken(data);
                 navigate('/');
-
             })
     }
 
@@ -62,6 +59,7 @@ export function Login(props) {
     function validateEmail() {
         return (/\S+@\S+\.\S+/.test(formData['email']));
     }
+
     // TODO input onChange lambda to useEffect
     return (
         <div className={'login-form-container'}>
@@ -75,7 +73,8 @@ export function Login(props) {
                        }}/>
 
                 <p>Password</p>
-                <input value={formData['password']} type="password" name={'password'} placeholder={'Enter your Password'}
+                <input value={formData['password']} type="password" name={'password'}
+                       placeholder={'Enter your Password'}
                        onChange={(value) => {
                            setFormData(prevFormData => ({...prevFormData, 'password': value.target.value}))
                        }}/>

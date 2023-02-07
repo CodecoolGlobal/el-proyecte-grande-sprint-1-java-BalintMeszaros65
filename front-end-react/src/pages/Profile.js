@@ -1,21 +1,20 @@
-import React, {useEffect, useState} from "react";
-import {getTokenForCurrentUser} from "../components/RouteGuard";
+import React, {useContext, useEffect, useState} from "react";
 import './Profile.css';
+import {currentToken} from "../App";
 
 
 export function Profile() {
-
+    const {token, setToken} = useContext(currentToken);
     const [userDetails, setUserDetails] = useState([]);
     const [userProjects, setUserProjects] = useState([]);
 
 
     async function getUserDetails() {
         console.log("get user details function called")
-        const user_id = getTokenForCurrentUser();
         const requestOptions = {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${user_id}`,
+                'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
             }
         }
@@ -31,13 +30,12 @@ export function Profile() {
             )
     }
 
-    async function getUserProjects(){
+    async function getUserProjects() {
         console.log("get user projects function called")
-        const user_id = getTokenForCurrentUser();
         const requestOptions = {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${user_id}`,
+                'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
             }
         }
@@ -46,7 +44,7 @@ export function Profile() {
                 return response.json();
             })
             .then(data => {
-                if(data.length > 0){
+                if (data.length > 0) {
                     // make USESTATE for 'has projects ?' --> give the user a message to make a project if its false
                     //setHasProjects(true);
                     setUserProjects(data);
@@ -60,7 +58,6 @@ export function Profile() {
         getUserDetails();
         getUserProjects();
     }, []);
-
 
 
     return (

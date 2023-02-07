@@ -1,13 +1,11 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import './ProjectInfo.css';
-import {useNavigate} from "react-router-dom";
-import {getTokenForCurrentUser} from "./RouteGuard";
-import {getValue} from "@testing-library/user-event/dist/utils";
+import {currentToken} from "../App";
 
 
-export function ProjectInfo(props) {
+export function ProjectInfo(project) {
 
-    const project = props.project;
+    const {token, setToken} = useContext(currentToken);
 
     const [projectMessages, setProjectMessages] = useState([]);
 
@@ -18,12 +16,11 @@ export function ProjectInfo(props) {
 
     async function getProjectMessages() {
         console.log("get project messages called")
-        const user_id = getTokenForCurrentUser();
         const project_id = project.id;
         const requestOptions = {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${user_id}`,
+                'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
             }
         }
@@ -41,13 +38,12 @@ export function ProjectInfo(props) {
     }
 
     async function sendNewProjectMessage(newProjectMessage) {
-        const user_id = getTokenForCurrentUser();
         const project_id = project.id;
         const message = {"message": newProjectMessage};
         const requestOptions = {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${user_id}`,
+                'Authorization': `Bearer ${JSON.parse(currentToken)}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(message)
