@@ -1,11 +1,11 @@
 import React, {useContext, useState} from 'react';
 import './Register.css';
 import {useNavigate} from "react-router-dom";
-import {currentToken} from "../App";
+import {cookiesContext} from "../App";
 
 
 export function Register() {
-    const {token, setToken} = useContext(currentToken);
+    const {cookies, setCookies} = useContext(cookiesContext);
     const navigate = useNavigate();
 
     const [formData, setFormData] = useState(
@@ -64,8 +64,7 @@ export function Register() {
                 }
             }).then(data => data.text())
             .then(data => {
-                console.log("i wanna set token")
-                setToken(data);
+                setCookies("token", data, { maxAge: 172800 });
                 navigate('/');
             })
     }

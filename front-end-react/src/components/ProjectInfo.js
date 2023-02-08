@@ -1,11 +1,11 @@
 import React, {useContext, useEffect, useState} from 'react';
 import './ProjectInfo.css';
-import {currentToken} from "../App";
+import {cookiesContext} from "../App";
 
 
-export function ProjectInfo(project) {
+export function ProjectInfo({project}) {
 
-    const {token, setToken} = useContext(currentToken);
+    const {cookies} = useContext(cookiesContext);
 
     const [projectMessages, setProjectMessages] = useState([]);
 
@@ -20,7 +20,7 @@ export function ProjectInfo(project) {
         const requestOptions = {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${cookies.token}`,
                 'Content-Type': 'application/json'
             }
         }
@@ -43,7 +43,7 @@ export function ProjectInfo(project) {
         const requestOptions = {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${JSON.parse(currentToken)}`,
+                'Authorization': `Bearer ${cookies.token}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(message)

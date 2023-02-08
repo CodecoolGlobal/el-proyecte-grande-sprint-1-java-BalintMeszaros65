@@ -1,12 +1,11 @@
 import React, {useContext, useEffect, useState} from "react";
 import './Profile.css';
-import {currentToken} from "../App";
+import {cookiesContext} from "../App";
 
 
 export function Profile() {
-    const {token, setToken} = useContext(currentToken);
+    const {cookies} = useContext(cookiesContext);
     const [userDetails, setUserDetails] = useState([]);
-    const [userProjects, setUserProjects] = useState([]);
 
 
     async function getUserDetails() {
@@ -14,7 +13,7 @@ export function Profile() {
         const requestOptions = {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${token}`,
+                'Authorization': `Bearer ${cookies.token}`,
                 'Content-Type': 'application/json'
             }
         }
@@ -30,35 +29,9 @@ export function Profile() {
             )
     }
 
-    async function getUserProjects() {
-        console.log("get user projects function called")
-        const requestOptions = {
-            method: 'GET',
-            headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json'
-            }
-        }
-        fetch(`/api/project`, requestOptions)
-            .then(response => {
-                return response.json();
-            })
-            .then(data => {
-                if (data.length > 0) {
-                    // make USESTATE for 'has projects ?' --> give the user a message to make a project if its false
-                    //setHasProjects(true);
-                    setUserProjects(data);
-                    console.log(data)
-                }
-            });
-    }
-
-
     useEffect(() => {
         getUserDetails();
-        getUserProjects();
     }, []);
-
 
     return (
         <div className={'profile-container'}>
@@ -93,7 +66,7 @@ export function Profile() {
             </div>
             <div className={'user-projects'}>
                 <h3>projects of user</h3>
-                <p>Under construction</p>
+                {cookies.projects.map((project, index) => <p key={index}>{project.projectName}</p>)}
             </div>
         </div>
     );

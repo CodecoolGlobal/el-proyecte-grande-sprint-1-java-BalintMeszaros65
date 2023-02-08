@@ -7,23 +7,21 @@ import {Navbar} from "./components/Navbar";
 import {HomeWithLoggedIn} from "./pages/HomeWithLoggedIn";
 import {PageNotFound} from "./pages/PageNotFound";
 import './components/FontawsomeIcons';
-import {createContext, useState} from "react";
+import {createContext} from "react";
 import {Profile} from "./pages/Profile";
+import {useCookies} from "react-cookie";
 
 
-export const currentToken = createContext();
-export const currentProjects = createContext();
+export const cookiesContext = createContext();
 
 function App() {
-    const [token, setToken] = useState('');
-    const [projects, setProjects] = useState('');
+    const [cookies, setCookies, removeCookies] = useCookies(["token", "projects"]);
 
     return (
-        <currentToken.Provider value={{token, setToken}}>
-            <currentProjects.Provider value={{projects, setProjects}}>
-                <Navbar setToken={setToken}/>
+        <cookiesContext.Provider value={{cookies, setCookies, removeCookies}}>
+                <Navbar/>
                 <Router>
-                    {token ?
+                    {cookies.token ?
                         <Routes>
                             <Route path={"/"} element={<HomeWithLoggedIn/>}/>
                             <Route path={"*"} element={<PageNotFound/>}/>
@@ -38,8 +36,7 @@ function App() {
                         </Routes>
                     }
                 </Router>
-            </currentProjects.Provider>
-        </currentToken.Provider>
+        </cookiesContext.Provider>
     );
 }
 

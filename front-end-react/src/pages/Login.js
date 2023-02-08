@@ -1,11 +1,11 @@
 import React, {useContext, useState} from 'react';
 import './Login.css';
 import {useNavigate} from "react-router-dom";
-import {currentToken} from "../App";
+import {cookiesContext} from "../App";
 
 export function Login() {
 
-    const {token, setToken} = useContext(currentToken);
+    const {cookies, setCookies} = useContext(cookiesContext);
     const navigate = useNavigate();
 
 
@@ -45,7 +45,7 @@ export function Login() {
                 }
             }).then(data => data.text())
             .then(data => {
-                setToken(data);
+                setCookies("token", data, { maxAge: 172800 });
                 navigate('/');
             })
     }

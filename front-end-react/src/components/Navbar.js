@@ -1,14 +1,15 @@
 import React, {useContext} from 'react';
 import './Navbar.css';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {currentToken} from '../App.js';
+import {cookiesContext} from '../App.js';
 
 
 export function Navbar() {
-    let {token, setToken} = useContext(currentToken);
+    let {cookies, setCookies, removeCookies} = useContext(cookiesContext);
 
     function logout() {
-        setToken('');
+        removeCookies("token");
+        removeCookies("projects");
     }
 
     return (
@@ -17,7 +18,7 @@ export function Navbar() {
             <div className={'logo-container'}>
                 <p className={'logo-text'}>Procrastination</p>
             </div>
-            {token &&
+            {cookies.token &&
                 <div className={'container'}>
                     <div className={'menu-container'}><a href={'/profile'}>Profile</a></div>
 
