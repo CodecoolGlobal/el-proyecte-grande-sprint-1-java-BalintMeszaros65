@@ -26,6 +26,7 @@ function App() {
                             <Route path={"/"} element={<HomeWithLoggedIn/>}/>
                             <Route path={"*"} element={<PageNotFound/>}/>
                             <Route path={"/profile"} element={<Profile/>}/>
+                            <Route path={"/project/*"} element={}/>
                         </Routes>
                         :
                         <Routes>
