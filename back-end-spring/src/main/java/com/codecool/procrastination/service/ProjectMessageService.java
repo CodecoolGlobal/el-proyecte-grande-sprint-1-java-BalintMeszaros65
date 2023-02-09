@@ -5,16 +5,10 @@ import com.codecool.procrastination.model.AppUser;
 import com.codecool.procrastination.model.Project;
 import com.codecool.procrastination.model.ProjectMessage;
 import com.codecool.procrastination.repositories.ProjectMessageRepository;
-import com.codecool.procrastination.repositories.ProjectRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -33,7 +27,7 @@ public class ProjectMessageService {
     }
 
     public List<String> getAllMessagesByProjectIdOrderedByTimestamp(UUID projectId) {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        String email = appUserService.getEmailFromToken();
         AppUser appUser = appUserService.getUserByEmail(email);
         // TODO authenticate from context if the user is a member of the project
         List<ProjectMessage> projectMessages = projectMessageRepository.getAllByProjectIdOrderByTimestamp(projectId);
@@ -43,7 +37,7 @@ public class ProjectMessageService {
     }
 
     public void saveProjectMessage(UUID projectId, ProjectMessage projectMessage) {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        String email = appUserService.getEmailFromToken();
         Project project = projectService.getProjectById(projectId);
         AppUser appUser = appUserService.getUserByEmail(email);
         // TODO authenticate from context if the user is a member of the project

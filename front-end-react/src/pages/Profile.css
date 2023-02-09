@@ -1,0 +1,37 @@
+.user-datas {
+    box-shadow: 1px 4px 5px 0px rgba(0,0,0,0.09);
+    -webkit-box-shadow: 1px 4px 5px 0px rgba(0,0,0,0.09);
+    -moz-box-shadow: 1px 4px 5px 0px rgba(0,0,0,0.09);
+    background-color: white;
+
+
+    padding: 30px 30px 5px 30px;
+    margin: 80px;
+    float: left;
+    width: 20%;
+}
+
+h3 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+h4 {
+    text-align: left;
+}
+
+p {
+    text-align: left;
+    margin-bottom: 30px;
+}
+
+.user-projects {
+    text-align: right;
+    margin: 80px;
+    float: left;
+
+    box-shadow: 1px 4px 5px 0px rgba(0,0,0,0.09);
+    -webkit-box-shadow: 1px 4px 5px 0px rgba(0,0,0,0.09);
+    -moz-box-shadow: 1px 4px 5px 0px rgba(0,0,0,0.09);
+    background-color: white;
+}

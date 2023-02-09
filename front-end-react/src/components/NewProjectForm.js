@@ -1,10 +1,10 @@
-import React, {useState} from "react";
-import {getTokenForCurrentUser} from "./RouteGuard";
+import React, {useContext, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import './NewProjectForm.css';
+import {cookiesContext} from "../App";
 
 
 export function NewProjectForm(props) {
+    const {cookies, setCookies} = useContext(cookiesContext);
     const navigate = useNavigate();
     const [formData, setFormData] = useState(
         {
@@ -21,11 +21,10 @@ export function NewProjectForm(props) {
 
 
     async function fetchForCreateNewProject() {
-        const user_id = getTokenForCurrentUser();
         const requestOptionsForNewProjectFetch = {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${user_id}`,
+                'Authorization': `Bearer ${cookies.token}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(formData)
@@ -59,7 +58,6 @@ export function NewProjectForm(props) {
                     e.preventDefault()
                     await fetchForCreateNewProject().then(() => {
                         props.setHasClicked(true);
-                        console.log('kattint a gombra')
                         navigate('/')
                     });
                 }}>

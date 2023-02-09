@@ -1,5 +1,5 @@
 import './App.css';
-import {BrowserRouter as Router, Routes, Route} from "react-router-dom";
+import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import {Home} from "./pages/Home";
 import {Register} from "./pages/Register";
 import {Login} from "./pages/Login";
@@ -7,42 +7,36 @@ import {Navbar} from "./components/Navbar";
 import {HomeWithLoggedIn} from "./pages/HomeWithLoggedIn";
 import {PageNotFound} from "./pages/PageNotFound";
 import './components/FontawsomeIcons';
-import {getTokenForCurrentUser, hasJWT} from "./components/RouteGuard";
-import {useEffect, useState} from "react";
+import {createContext} from "react";
 import {Profile} from "./pages/Profile";
-import {NewProjectForm} from "./components/NewProjectForm";
-import {ProjectInfo} from "./components/ProjectInfo";
+import {useCookies} from "react-cookie";
 
+
+export const cookiesContext = createContext();
 
 function App() {
-    const [token, setToken] = useState('');
-    const [projects, setProjects] = useState([]);
-    const [hasProjects, setHasProjects] = useState(false);
-    let [hasClicked, setHasClicked] = useState(false);
-
+    const [cookies, setCookies, removeCookies] = useCookies(["token", "projects"]);
 
     return (
-        <>
-            <Navbar setToken={setToken} projects={projects} />
-            <Router>
-                {hasJWT() ?
-                <Routes>
-                    <Route path={"/"} element={<HomeWithLoggedIn hasClicked={hasClicked} setHasClicked={setHasClicked} projects={projects} setProjects={setProjects} hasProjects={hasProjects} setHasProjects={setHasProjects} />} />
-                    <Route path={"/profile"} element={<Profile projects={projects} hasProjects={hasProjects} />} />
-                    <Route path={"/add-new-project"} element={<NewProjectForm hasClicked={hasClicked} setHasClicked={setHasClicked} />} />
-                    <Route path={"/project/:id"} element={<ProjectInfo />} />
-                    <Route path={"*"} element={<PageNotFound />} />
-                </Routes>
-                :
-                <Routes>
-                    <Route path={"/"} element={<Home/>} />
-                    <Route path={"/login"} element={<Login setToken={setToken} />}/>
-                    <Route path={"/register"} element={<Register setToken={setToken}/>}/>
-                    <Route path={"*"} element={<PageNotFound />} />
-                </Routes>
-                }
-            </Router>
-        </>
+        <cookiesContext.Provider value={{cookies, setCookies, removeCookies}}>
+                <Navbar/>
+                <Router>
+                    {cookies.token ?
+                        <Routes>
+                            <Route path={"/"} element={<HomeWithLoggedIn/>}/>
+                            <Route path={"*"} element={<PageNotFound/>}/>
+                            <Route path={"/profile"} element={<Profile/>}/>
+                        </Routes>
+                        :
+                        <Routes>
+                            <Route path={"/"} element={<Home/>}/>
+                            <Route path={"/login"} element={<Login/>}/>
+                            <Route path={"/register"} element={<Register/>}/>
+                            <Route path={"*"} element={<PageNotFound/>}/>
+                        </Routes>
+                    }
+                </Router>
+        </cookiesContext.Provider>
     );
 }
 

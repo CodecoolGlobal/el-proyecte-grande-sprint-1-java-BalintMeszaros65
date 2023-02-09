@@ -1,22 +1,20 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import './HomeWithLoggedIn.css';
-import {getTokenForCurrentUser} from "../components/RouteGuard";
 import {NewProjectForm} from "../components/NewProjectForm";
 import {ProjectInfo} from "../components/ProjectInfo";
+import {cookiesContext} from "../App.js";
 
-export function HomeWithLoggedIn(props) {
+export function HomeWithLoggedIn() {
     //                <Logged In Version of Home>
-
-
-    let indexOfLastProject = 0
+    const {cookies, setCookies} = useContext(cookiesContext)
+    const [hasProjects, setHasProjects] = useState(false); //TODO get rid of and check cookies.projects value
+    let [hasClicked, setHasClicked] = useState(false);
 
     useEffect(() => {
-        console.log('useEffect Triggered')
-       const user_id = getTokenForCurrentUser();
         const requestOptions = {
             method: 'GET',
             headers: {
-                'Authorization': `Bearer ${user_id}`,
+                'Authorization': `Bearer ${cookies.token}`,
                 'Content-Type': 'application/json'
             }
         }
@@ -25,38 +23,19 @@ export function HomeWithLoggedIn(props) {
                 return response.json();
             })
             .then(data => {
-                if(data.length > 0){
-                    props.setHasProjects(true);
-                    props.setProjects(data);
-                    indexOfLastProject = data.length;
-                    localStorage.setItem('projects', JSON.stringify(parseObject(data)));
-                    console.log(data.length)
+                if (data.length > 0) {
+                    setHasProjects(true);
+                    setCookies("projects", data, { maxAge: 172800 });
                 } else {
-                    props.setHasProjects(false);
-                    props.setProjects(data);
+                    setHasProjects(false);
                 }
             });
-    }, [props.hasClicked]);
+    }, [hasClicked]);
 
-    function parseObject(data) {
-        let map = {};
-        for(let i=0; i<data.length; i++) {
-            map[i] = data[i];
-        }
-        return map;
-    }
-
-    function lastProjectIndex() {
-        let result = 0;
-        let projects = JSON.parse(localStorage.getItem('projects'));
-
-        return Object.keys(projects).length-1;
-    }
-
-
-return (
+    return (
         <div className={'home-container'}>
-            {(props.hasProjects) ? <ProjectInfo id={lastProjectIndex()} /> : <NewProjectForm setHasClicked={props.setHasClicked} />  }
+            {(hasProjects) ? <ProjectInfo project={cookies.projects.at(-1)}/> :
+                <NewProjectForm setHasClicked={setHasClicked}/>}
         </div>
     )
 }

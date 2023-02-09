@@ -1,7 +1,8 @@
+import React, {useContext} from 'react';
 import React, {useEffect, useRef, useState} from 'react';
 import './Navbar.css';
-import {FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { hasJWT } from "./RouteGuard";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {cookiesContext} from '../App.js';
 
 
 export function Navbar(props){
@@ -11,6 +12,8 @@ export function Navbar(props){
     let projects = {};
 
     (localStorage.getItem('projects')) ? projects = JSON.parse(localStorage.getItem('projects')) : projects = {};
+export function Navbar() {
+    let {cookies, setCookies, removeCookies} = useContext(cookiesContext);
 
     let menuRef = useRef();
 
@@ -29,9 +32,8 @@ export function Navbar(props){
         }
     });
     function logout() {
-        localStorage.setItem("token", "");
-        localStorage.setItem("projects", "");
-        props.setToken("token", "");
+        removeCookies("token");
+        removeCookies("projects");
     }
 
     return (
@@ -40,11 +42,11 @@ export function Navbar(props){
             <div className={'logo-container'}>
                 <a href={'/'} className={'logo-text'}>Procrastination</a>
             </div>
-            {hasJWT() &&
+            {cookies.token &&
                 <div className={'container'}>
-                    <div className={'menu-container'}><a href={'/profile'} >Profile</a></div>
+                    <div className={'menu-container'}><a href={'/profile'}>Profile</a></div>
 
-                    <div className={'menu-container'}><a href={'/'} onClick={logout} >Logout</a>
+                    <div className={'menu-container'}><a href={'/'} onClick={logout}>Logout</a>
 
                     </div>
                     <div ref={menuRef} className={'new-project-container'} onClick={() => setIsOpenDropDown(true) } >

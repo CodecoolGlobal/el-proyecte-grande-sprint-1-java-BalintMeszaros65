@@ -1,5 +1,6 @@
 package com.codecool.procrastination.controller;
 
+import com.codecool.procrastination.dto.AppUserDto;
 import com.codecool.procrastination.model.AppUser;
 import com.codecool.procrastination.service.AppUserService;
 import org.modelmapper.ModelMapper;
@@ -21,7 +22,16 @@ public class AppUserController {
         this.modelMapper = modelMapper;
     }
 
-    // TODO after auth ResponseEntity with generated token
+    @GetMapping("/api/user")
+    public boolean userExists() {
+        return appUserService.userExists();
+    }
+
+    @GetMapping("/api/user/get-details")
+    public AppUserDto getUserDetails() {
+        return appUserService.getUserDetails();
+    }
+
     @PostMapping("/api/user/registration")
     public ResponseEntity<String> registerUser(@RequestBody AppUser appUser) {
         return appUserService.registerUser(appUser);

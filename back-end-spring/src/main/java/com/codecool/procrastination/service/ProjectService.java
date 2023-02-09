@@ -5,7 +5,6 @@ import com.codecool.procrastination.model.AppUser;
 import com.codecool.procrastination.model.Project;
 import com.codecool.procrastination.repositories.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,7 +39,7 @@ public class ProjectService {
     }
 
     private AppUser getCurrentAppUser() {
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        String email = appUserService.getEmailFromToken();
         return appUserService.getUserByEmail(email);
     }
 
