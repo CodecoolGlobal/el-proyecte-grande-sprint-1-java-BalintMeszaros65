@@ -15,7 +15,6 @@ export function ProjectInfo({project}) {
     }
 
     async function getProjectMessages() {
-        console.log("get project messages called")
         const project_id = project.id;
         const requestOptions = {
             method: 'GET',
@@ -82,7 +81,6 @@ export function ProjectInfo({project}) {
                                if (event.key === 'Enter') {
                                    if (event.currentTarget.value.trim().length > 0) {
                                        sendNewProjectMessage(event.currentTarget.value)
-
                                    }
                                    event.currentTarget.value = "";
                                }
@@ -94,7 +92,6 @@ export function ProjectInfo({project}) {
                 <div className={'project_members'}>
                     Members
                     <div className={"member_container"}>
-
                         {project.members.map((member) => (
                             <p className={"project_member"} key={member["realUserName"]}>{member.realUserName}</p>
                         ))}

@@ -66,7 +66,10 @@ export function Profile() {
             </div>
             <div className={'user-projects'}>
                 <h3>projects of user</h3>
-                {cookies.projects.map((project, index) => <ProjectCard key={index} project={project}/>)}
+                {cookies.projects?.length > 0
+                    ? cookies.projects.map((project, index) => <ProjectCard key={index} project={project}/>)
+                    : <p>You don't have any projects yet!</p>
+                }
             </div>
         </div>
     );

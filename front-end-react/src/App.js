@@ -19,14 +19,13 @@ function App() {
 
     return (
         <cookiesContext.Provider value={{cookies, setCookies, removeCookies}}>
-                <Navbar/>
                 <Router>
+                    <Navbar/>
                     {cookies.token ?
                         <Routes>
                             <Route path={"/"} element={<HomeWithLoggedIn/>}/>
                             <Route path={"*"} element={<PageNotFound/>}/>
                             <Route path={"/profile"} element={<Profile/>}/>
-                            <Route path={"/project/*"} element={}/>
                         </Routes>
                         :
                         <Routes>

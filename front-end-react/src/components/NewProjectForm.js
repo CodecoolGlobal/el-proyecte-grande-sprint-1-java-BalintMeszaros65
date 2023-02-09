@@ -58,7 +58,7 @@ export function NewProjectForm(props) {
                     e.preventDefault()
                     await fetchForCreateNewProject().then(() => {
                         props.setHasClicked(true);
-                        navigate('/')
+                        navigate('/', {state: {index: null}});
                     });
                 }}>
                     New Project

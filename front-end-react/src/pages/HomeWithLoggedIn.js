@@ -3,12 +3,13 @@ import './HomeWithLoggedIn.css';
 import {NewProjectForm} from "../components/NewProjectForm";
 import {ProjectInfo} from "../components/ProjectInfo";
 import {cookiesContext} from "../App.js";
+import {useLocation} from "react-router-dom";
 
 export function HomeWithLoggedIn() {
     //                <Logged In Version of Home>
+    const location = useLocation();
     const {cookies, setCookies} = useContext(cookiesContext)
-    const [hasProjects, setHasProjects] = useState(false); //TODO get rid of and check cookies.projects value
-    let [hasClicked, setHasClicked] = useState(false);
+    const [hasClicked, setHasClicked] = useState(false);
 
     useEffect(() => {
         const requestOptions = {
@@ -24,18 +25,18 @@ export function HomeWithLoggedIn() {
             })
             .then(data => {
                 if (data.length > 0) {
-                    setHasProjects(true);
-                    setCookies("projects", data, { maxAge: 172800 });
-                } else {
-                    setHasProjects(false);
+                    setCookies("projects", data, {maxAge: 172800});
                 }
             });
     }, [hasClicked]);
 
     return (
         <div className={'home-container'}>
-            {(hasProjects) ? <ProjectInfo project={cookies.projects.at(-1)}/> :
-                <NewProjectForm setHasClicked={setHasClicked}/>}
+            {location.state ? location.state.project
+                    ? <ProjectInfo project={location.state.project}/>
+                    : <ProjectInfo project={cookies.projects.at(-1)}/>
+                : <NewProjectForm setHasClicked={setHasClicked}/>
+            }
         </div>
     )
 }
