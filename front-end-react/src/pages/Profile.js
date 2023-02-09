@@ -1,6 +1,7 @@
 import React, {useContext, useEffect, useState} from "react";
 import './Profile.css';
 import {cookiesContext} from "../App";
+import {ProjectCard} from "../components/ProjectCard";
 
 
 export function Profile() {
@@ -9,7 +10,6 @@ export function Profile() {
 
 
     async function getUserDetails() {
-        console.log("get user details function called")
         const requestOptions = {
             method: 'GET',
             headers: {
@@ -66,7 +66,7 @@ export function Profile() {
             </div>
             <div className={'user-projects'}>
                 <h3>projects of user</h3>
-                {cookies.projects.map((project, index) => <p key={index}>{project.projectName}</p>)}
+                {cookies.projects.map((project, index) => <ProjectCard key={index} project={project}/>)}
             </div>
         </div>
     );
